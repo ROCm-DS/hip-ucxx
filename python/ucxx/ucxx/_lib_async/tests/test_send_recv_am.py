@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: Copyright (c) 2023-2024, NVIDIA CORPORATION & AFFILIATES.
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
+
 import asyncio
 from functools import partial
 
@@ -35,10 +39,16 @@ def get_data():
     try:
         import cupy as cp
 
+        def cupy_generator(size):
+            msg = cp.arange(size, dtype=np.int64)
+            # need an explicit sync to ensure the data is ready
+            cp.cuda.get_current_stream().synchronize()
+            return msg
+
         ret.append(
             {
                 "allocator": partial(cp.ones, dtype=np.uint8),
-                "generator": partial(cp.arange, dtype=np.int64),
+                "generator": cupy_generator,
                 "validator": lambda recv, exp: cp.testing.assert_array_equal(
                     cp.asarray(recv).view(np.int64), exp
                 ),

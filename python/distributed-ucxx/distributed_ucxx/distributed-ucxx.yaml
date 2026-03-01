@@ -1,9 +1,11 @@
 distributed-ucxx:
   version: 1
 
-  cuda-copy: null            # enable cuda-copy
+  cuda-copy: null            # enable cuda_copy
+  rocm-copy: null            # enable rocm_copy
   tcp: null                  # enable tcp
   nvlink: null               # enable cuda_ipc
+  rocm-ipc: null             # enable rocm_ipc
   infiniband: null           # enable Infiniband
   rdmacm: null               # enable RDMACM
   create-cuda-context: null  # create CUDA context before UCX initialization

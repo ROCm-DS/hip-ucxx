@@ -1,14 +1,20 @@
 /**
  * SPDX-FileCopyrightText: Copyright (c) 2022-2023, NVIDIA CORPORATION & AFFILIATES.
- * SPDX-License-Identifier: BSD-3-Clause
+ * SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+ * SPDX-License-Identifier: BSD-3-Clause AND MIT
  */
+
 #pragma once
 
 #include <functional>
 #include <memory>
 #include <vector>
 
+#ifndef __HIP_PLATFORM_AMD__
 #include <cuda_runtime_api.h>
+#else
+#include <ucxx/cuda_runtime.h>
+#endif
 
 #include <ucxx/api.h>
 

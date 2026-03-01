@@ -11,6 +11,10 @@ properties:
         description: |
           Set environment variables to enable CUDA support over UCX. This may be used even if
           InfiniBand and NVLink are not supported or disabled, then transferring data over TCP.
+      rocm-copy:
+        type: [boolean, 'null']
+        description: |
+          Similar to cuda-copy, but for rocm.
       tcp:
         type: [boolean, 'null']
         description: |
@@ -20,6 +24,10 @@ properties:
         type: [boolean, 'null']
         description: |
           Set environment variables to enable UCX over NVLink, implies ``distributed-ucxx.tcp=True``.
+      rocm-ipc:
+        type: [boolean, 'null']
+        description: |
+          Set environment variables to enable UCX over rocm_ipc, implies ``distributed-ucxx.tcp=True``.
       infiniband:
         type: [boolean, 'null']
         description: |

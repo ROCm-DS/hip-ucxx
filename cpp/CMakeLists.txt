@@ -1,8 +1,8 @@
 # =================================================================================
 # SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION & AFFILIATES.
-# SPDX-License-Identifier: BSD 3-Clause License
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 # =================================================================================
-
 cmake_minimum_required(VERSION 3.26.4 FATAL_ERROR)
 
 include(../cmake/rapids_config.cmake)
@@ -40,6 +40,7 @@ option(BUILD_TESTS "Configure CMake to build tests" ON)
 option(BUILD_BENCHMARKS "Configure CMake to build benchmarks" OFF)
 option(BUILD_EXAMPLES "Configure CMake to build examples" OFF)
 option(BUILD_SHARED_LIBS "Build UCXX shared libraries" ON)
+option(UCXX_BUILD_PYTHON_LIB "Build Python API library" OFF)
 option(UCXX_ENABLE_RMM "Enable support for CUDA multi-buffer transfer with RMM" OFF)
 option(DISABLE_DEPRECATION_WARNINGS "Disable warnings generated from deprecated declarations." OFF)
 
@@ -59,9 +60,8 @@ set(LIBUCXX_BUILD_TESTS ${BUILD_TESTS})
 set(LIBUCXX_BUILD_BENCHMARKS ${BUILD_BENCHMARKS})
 set(LIBUCXX_BUILD_EXAMPLES ${BUILD_EXAMPLES})
 
-set(UCXX_CXX_FLAGS -Wall -Wattributes -Werror -Wextra -Wsign-conversion
-                   -Wno-missing-field-initializers
-)
+set(UCXX_CXX_FLAGS -Wall -Wattributes -Wextra -Wsign-conversion -Wno-missing-field-initializers)
+# set(UCXX_CXX_FLAGS -Werror ${UCXX_CXX_FLAGS})
 set(UCXX_CXX_DEFINITIONS "")
 
 # ##################################################################################################
@@ -88,7 +88,7 @@ rapids_find_package(
 )
 
 # add third party dependencies using CPM
-rapids_cpm_init()
+rapids_cpm_init(OVERRIDE ${CMAKE_CURRENT_LIST_DIR}/../versions.json)
 # find rmm
 if(UCXX_ENABLE_RMM)
   include(cmake/thirdparty/get_rmm.cmake)
@@ -166,12 +166,11 @@ target_compile_definitions(ucxx PUBLIC "$<$<COMPILE_LANGUAGE:CXX>:${UCXX_CXX_DEF
 # Enable RMM if necessary
 if(UCXX_ENABLE_RMM)
   target_link_libraries(ucxx PUBLIC rmm::rmm)
-
   target_compile_definitions(ucxx PUBLIC UCXX_ENABLE_RMM)
 endif()
 
 # Specify the target module library dependencies
-target_link_libraries(ucxx PUBLIC ucx::ucp)
+target_link_libraries(ucxx PUBLIC ucx::ucp ucx::ucs)
 
 # Add Conda library, and include paths if specified
 if(TARGET conda_env)
@@ -179,6 +178,13 @@ if(TARGET conda_env)
 endif()
 
 add_library(ucxx::ucxx ALIAS ucxx)
+
+# ##################################################################################################
+# * build ucxx_libpython
+
+if(UCXX_BUILD_PYTHON_LIB)
+  add_subdirectory(python)
+endif()
 
 # ##################################################################################################
 # * tests and benchmarks --------------------------------------------------------------------------

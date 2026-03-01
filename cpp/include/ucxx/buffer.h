@@ -1,6 +1,7 @@
 /**
  * SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION & AFFILIATES.
- * SPDX-License-Identifier: BSD-3-Clause
+ * SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+ * SPDX-License-Identifier: BSD-3-Clause AND MIT
  */
 #pragma once
 
@@ -193,7 +194,7 @@ class HostBuffer : public Buffer {
    *
    * @return the void pointer to the buffer.
    */
-  [[nodiscard]] virtual void* data();
+  [[nodiscard]] void* data() override;
 };
 
 #if UCXX_ENABLE_RMM
@@ -286,7 +287,7 @@ class RMMBuffer : public Buffer {
    *
    * @return the void pointer to the device buffer.
    */
-  [[nodiscard]] virtual void* data();
+  [[nodiscard]] void* data() override;
 };
 #endif
 

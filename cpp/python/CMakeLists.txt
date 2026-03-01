@@ -1,8 +1,8 @@
 # ======================================================================================================
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES. All rights
-# reserved. SPDX-License-Identifier: BSD 3-Clause License
+# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 # ======================================================================================================
-
 cmake_minimum_required(VERSION 3.26.4 FATAL_ERROR)
 
 include(../../cmake/rapids_config.cmake)
@@ -29,24 +29,28 @@ project(
 )
 
 option(BUILD_SHARED_LIBS "Build UCXX Python shared libraries" ON)
-option(FIND_UCXX_CPP "Search for existing UCXX C++ installations before defaulting to local files"
-       OFF
-)
 
 # add third party dependencies using CPM
-rapids_cpm_init()
+rapids_cpm_init(OVERRIDE ${CMAKE_CURRENT_LIST_DIR}/../../versions.json)
 # find rmm
 include(../cmake/thirdparty/get_rmm.cmake)
 
-if(FIND_UCXX_CPP)
-  rapids_find_package(
-    ucxx REQUIRED
-    BUILD_EXPORT_SET ucxx-python-exports
-    INSTALL_EXPORT_SET ucxx-python-exports
+# if UCXX_BUILD_PYTHON_LIB is defined, then this is being built as part of the main libucxx project
+# itself and the following code path does not apply
+if(NOT DEFINED UCXX_BUILD_PYTHON_LIB)
+  option(FIND_UCXX_CPP
+         "Search for existing UCXX C++ installations before defaulting to local files" OFF
   )
-else()
-  set(UCXX_ENABLE_RMM ON)
-  add_subdirectory(.. ucxx-cpp)
+  if(FIND_UCXX_CPP)
+    rapids_find_package(
+      ucxx REQUIRED
+      BUILD_EXPORT_SET ucxx-python-exports
+      INSTALL_EXPORT_SET ucxx-python-exports
+    )
+  else()
+    set(UCXX_ENABLE_RMM ON)
+    add_subdirectory(.. ucxx-cpp)
+  endif()
 endif()
 
 rapids_find_package(

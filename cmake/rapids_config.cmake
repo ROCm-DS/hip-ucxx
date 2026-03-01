@@ -11,20 +11,24 @@
 # or implied. See the License for the specific language governing permissions and limitations under
 # the License.
 # =============================================================================
-file(READ "${CMAKE_CURRENT_LIST_DIR}/../RAPIDS_VERSION" _rapids_version)
-if(_rapids_version MATCHES [[^([0-9][0-9])\.([0-9][0-9])\.([0-9][0-9])]])
-  set(RAPIDS_VERSION_MAJOR "${CMAKE_MATCH_1}")
-  set(RAPIDS_VERSION_MINOR "${CMAKE_MATCH_2}")
-  set(RAPIDS_VERSION_PATCH "${CMAKE_MATCH_3}")
-  set(RAPIDS_VERSION_MAJOR_MINOR "${RAPIDS_VERSION_MAJOR}.${RAPIDS_VERSION_MINOR}")
-  set(RAPIDS_VERSION "${RAPIDS_VERSION_MAJOR}.${RAPIDS_VERSION_MINOR}.${RAPIDS_VERSION_PATCH}")
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: Apache-2.0 AND MIT
+# =============================================================================
+
+file(READ "${CMAKE_CURRENT_LIST_DIR}/../ROCmDS_VERSION" _rocmds_version)
+if(_rocmds_version MATCHES [[^([0-9][0-9])\.([0-9][0-9])\.([0-9][0-9])]])
+  set(ROCmDS_VERSION_MAJOR "${CMAKE_MATCH_1}")
+  set(ROCmDS_VERSION_MINOR "${CMAKE_MATCH_2}")
+  set(ROCmDS_VERSION_PATCH "${CMAKE_MATCH_3}")
+  set(ROCmDS_VERSION_MAJOR_MINOR "${ROCmDS_VERSION_MAJOR}.${ROCmDS_VERSION_MINOR}")
+  set(ROCmDS_VERSION "${ROCmDS_VERSION_MAJOR}.${ROCmDS_VERSION_MINOR}.${ROCmDS_VERSION_PATCH}")
 else()
-  string(REPLACE "\n" "\n  " _rapids_version_formatted "  ${_rapids_version}")
+  string(REPLACE "\n" "\n  " _rocmds_version_formatted "  ${_rocmds_version}")
   message(
     FATAL_ERROR
-      "Could not determine RAPIDS version. Contents of RAPIDS_VERSION file:\n${_rapids_version_formatted}"
+      "Could not determine ROCmDS version. Contents of ROCmDS_VERSION file:\n${_rocmds_version_formatted}"
   )
 endif()
 
-set(rapids-cmake-version "${RAPIDS_VERSION_MAJOR_MINOR}")
+set(rapids-cmake-version "${ROCmDS_VERSION_MAJOR_MINOR}")
 include("${CMAKE_CURRENT_LIST_DIR}/RAPIDS.cmake")

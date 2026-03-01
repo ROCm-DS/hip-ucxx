@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2022-2023, NVIDIA CORPORATION & AFFILIATES.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 import functools
 
@@ -90,6 +91,9 @@ async def test_send_recv_cupy(size, dtype):
     )
     client = await ucxx.create_endpoint(ucxx.get_address(), listener.port)
     await client.send(msg_size)
+
+    # explicit sync is required before send to ensure data is ready
+    cupy.cuda.get_current_stream().synchronize()
     await client.send(msg)
     resp = cupy.empty_like(msg)
     await client.recv(resp)

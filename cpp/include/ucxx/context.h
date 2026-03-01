@@ -1,6 +1,7 @@
 /**
  * SPDX-FileCopyrightText: Copyright (c) 2022-2023, NVIDIA CORPORATION & AFFILIATES.
- * SPDX-License-Identifier: BSD-3-Clause
+ * SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+ * SPDX-License-Identifier: BSD-3-Clause AND MIT
  */
 #pragma once
 
@@ -144,16 +145,16 @@ class Context : public Component {
   [[nodiscard]] uint64_t getFeatureFlags() const;
 
   /**
-   * @brief Query whether CUDA support is available.
+   * @brief Query whether CUDA (or ROCm) support is available.
    *
    * Query whether the UCP context has CUDA support available. This is a done through a
-   * combination of verifying whether CUDA memory support is available and `UCX_TLS` allows
+   * combination of verifying whether CUDA/HIP memory support is available and `UCX_TLS` allows
    * CUDA to be enabled, essentially `UCX_TLS` must explicitly be one of the following:
    *
    * 1. Exactly `all`;
-   * 2. Contain a field starting with `cuda`;
+   * 2. Contain a field starting with `cuda/rocm`;
    * 3. Start with `^` (disable all listed transports) and _NOT_ contain a field named
-   *    either `cuda` or `cuda_copy`.
+   *    either `cuda` or `cuda_copy` (`rocm` or `rocm_copy` on AMD).
    *
    * @return Whether CUDA support is available.
    */

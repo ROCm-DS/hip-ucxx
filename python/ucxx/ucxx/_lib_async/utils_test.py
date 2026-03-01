@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION & AFFILIATES.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 import asyncio
 import io
@@ -12,16 +13,26 @@ import pytest
 
 import ucxx
 
-normal_env = {
+normal_cuda_env = {
     "UCX_RNDV_SCHEME": "put_zcopy",
     "UCX_MEMTYPE_CACHE": "n",
     "UCX_TLS": "rc,cuda_copy,cuda_ipc",
     "CUDA_VISIBLE_DEVICES": "0",
 }
 
+normal_rocm_env = {
+    "UCX_RNDV_SCHEME": "put_zcopy",
+    "UCX_MEMTYPE_CACHE": "n",
+    "UCX_TLS": "rc,rocm_copy,rocm_ipc",
+    "CUDA_VISIBLE_DEVICES": "0",
+}
+
 
 def set_env():
-    os.environ.update(normal_env)
+    if "cuda" in ucxx.get_active_transports():
+        os.environ.update(normal_cuda_env)
+    else:
+        os.environ.update(normal_rocm_env)
 
 
 def get_num_gpus():

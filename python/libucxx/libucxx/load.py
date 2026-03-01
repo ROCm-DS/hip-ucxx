@@ -11,6 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# =============================================================================
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: Apache-2.0 AND MIT
+# =============================================================================
 
 import ctypes
 import os
@@ -38,6 +42,8 @@ def _load_wheel_installation(soname: str):
     Returns ``None`` if the library cannot be loaded.
     """
     if os.path.isfile(lib := os.path.join(os.path.dirname(__file__), "lib64", soname)):
+        return ctypes.CDLL(lib, PREFERRED_LOAD_FLAG)
+    if os.path.isfile(lib := os.path.join(os.path.dirname(__file__), "lib", soname)):
         return ctypes.CDLL(lib, PREFERRED_LOAD_FLAG)
     return None
 

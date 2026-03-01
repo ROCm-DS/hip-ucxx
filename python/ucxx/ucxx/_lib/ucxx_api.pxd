@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION & AFFILIATES.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 
 from posix cimport fcntl
@@ -69,6 +70,7 @@ cdef extern from "ucp/api/ucp.h" nogil:
 
     ucs_memory_type_t UCS_MEMORY_TYPE_HOST
     ucs_memory_type_t UCS_MEMORY_TYPE_CUDA
+    ucs_memory_type_t UCS_MEMORY_TYPE_ROCM
 
     int UCP_FEATURE_TAG
     int UCP_FEATURE_WAKEUP
@@ -84,7 +86,6 @@ cdef extern from "ucp/api/ucp.h" nogil:
     void ucp_get_version(unsigned * major_version,
                          unsigned *minor_version,
                          unsigned *release_number)
-
 
 cdef extern from "rmm/device_buffer.hpp" namespace "rmm" nogil:
     cdef cppclass device_buffer:

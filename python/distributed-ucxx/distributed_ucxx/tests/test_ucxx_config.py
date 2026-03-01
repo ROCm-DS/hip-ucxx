@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 from __future__ import annotations
 
@@ -29,6 +30,8 @@ rmm = pytest.importorskip("rmm")
 
 @gen_test()
 async def test_ucx_config(ucxx_loop, cleanup):
+    # -----------------------------------------------------------------------------
+    # Cuda:
     ucx = {
         "nvlink": True,
         "infiniband": True,
@@ -104,6 +107,61 @@ async def test_ucx_config(ucxx_loop, cleanup):
         ucx_config, ucx_environment = _prepare_ucx_config()
         assert ucx_config == {
             "TLS": "rc,tcp,cuda_copy",
+            "SOCKADDR_TLS_PRIORITY": "rdmacm",
+        }
+        assert ucx_environment == {"UCX_MEMTRACK_DEST": "stdout"}
+
+    # -----------------------------------------------------------------------------
+    # ROCm:
+    ucx = {
+        "rocm-ipc": True,
+        "infiniband": True,
+        "rdmacm": False,
+        "tcp": True,
+        "rocm-copy": True,
+    }
+
+    with dask.config.set({"distributed-ucxx": ucx}):
+        ucx_config, ucx_environment = _prepare_ucx_config()
+        assert ucx_config == {
+            "TLS": "rc,tcp,rocm_copy,rocm_ipc",
+            "SOCKADDR_TLS_PRIORITY": "tcp",
+        }
+        assert ucx_environment == {}
+
+    ucx = {
+        "rocm-ipc": False,
+        "infiniband": True,
+        "rdmacm": True,
+        "tcp": True,
+        "rocm-copy": True,
+    }
+
+    with dask.config.set({"distributed-ucxx": ucx}):
+        ucx_config, ucx_environment = _prepare_ucx_config()
+        assert ucx_config == {
+            "TLS": "rc,tcp,rocm_copy",
+            "SOCKADDR_TLS_PRIORITY": "rdmacm",
+        }
+        assert ucx_environment == {}
+
+    ucx = {
+        "rocm-ipc": False,
+        "infiniband": True,
+        "rdmacm": True,
+        "tcp": True,
+        "rocm-copy": True,
+    }
+
+    ucx["environment"] = {
+        "tls": "all",
+        "memtrack-dest": "stdout",
+    }
+
+    with dask.config.set({"distributed-ucxx": ucx}):
+        ucx_config, ucx_environment = _prepare_ucx_config()
+        assert ucx_config == {
+            "TLS": "rc,tcp,rocm_copy",
             "SOCKADDR_TLS_PRIORITY": "rdmacm",
         }
         assert ucx_environment == {"UCX_MEMTRACK_DEST": "stdout"}

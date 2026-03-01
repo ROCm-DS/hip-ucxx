@@ -1,6 +1,7 @@
 # ======================================================================================================
 # SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES. All rights
-# reserved. SPDX-License-Identifier: BSD 3-Clause License
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 # ======================================================================================================
 
 find_package(Threads REQUIRED)
@@ -37,8 +38,6 @@ function(ConfigureBench CMAKE_BENCH_NAME)
   # Add CUDA support if enabled
   if(UCXX_BENCHMARKS_ENABLE_CUDA)
     target_compile_definitions(${CMAKE_BENCH_NAME} PRIVATE UCXX_BENCHMARKS_ENABLE_CUDA)
-    find_package(CUDAToolkit REQUIRED)
-    target_link_libraries(${CMAKE_BENCH_NAME} PRIVATE CUDA::cudart)
   endif()
 
   add_custom_command(

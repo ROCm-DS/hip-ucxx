@@ -11,6 +11,9 @@
 # or implied. See the License for the specific language governing permissions and limitations under
 # the License.
 # =============================================================================
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: Apache-2.0 AND MIT
+# =============================================================================
 
 cmake_minimum_required(VERSION 3.26.4 FATAL_ERROR)
 
@@ -37,17 +40,6 @@ project(
   LANGUAGES CXX
 )
 
-# Check if ucxx is already available. If so, it's the user's responsibility to ensure that the CMake
-# package is also available at build time of the Python ucxx package.
-find_package(ucxx "${ucxx_version}")
-
-if(ucxx_FOUND)
-  return()
-endif()
-
-unset(ucxx_FOUND)
-
 set(BUILD_TESTS OFF)
 set(BUILD_BENCHMARKS OFF)
-
 add_subdirectory(../../cpp ucxx-cpp)

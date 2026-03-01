@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2022-2025, NVIDIA CORPORATION & AFFILIATES.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 """UCXX: Python bindings for the Unified Communication X library (UCX <www.openucx.org>)"""
 
@@ -16,6 +17,12 @@ else:
     libucxx.load_library()
     del libucxx
 
+try:
+    import numba.hip
+
+    numba.hip.pose_as_cuda()
+except ModuleNotFoundError:
+    pass
 
 logger = logging.getLogger("ucx")
 
@@ -57,8 +64,8 @@ if "UCX_RNDV_THRESH" not in os.environ:
     os.environ["UCX_RNDV_THRESH"] = "8192"
 
 if "UCX_RNDV_FRAG_MEM_TYPE" not in os.environ:
-    logger.info("Setting UCX_RNDV_FRAG_MEM_TYPE=cuda")
-    os.environ["UCX_RNDV_FRAG_MEM_TYPE"] = "cuda"
+    logger.info("Setting UCX_RNDV_FRAG_MEM_TYPE=rocm")
+    os.environ["UCX_RNDV_FRAG_MEM_TYPE"] = "rocm"
 
 if (
     pynvml is not None

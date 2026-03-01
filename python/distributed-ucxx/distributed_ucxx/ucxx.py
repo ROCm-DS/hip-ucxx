@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 """
 :ref:`UCX`_ based communications for distributed.
@@ -243,6 +244,7 @@ def init_once():
         # depending on configuration of UCX, but this is better than
         # nothing
         or ("cuda" in ucx_tls and "^cuda" not in ucx_tls)
+        or ("rocm" in ucx_tls and "^rocm" not in ucx_tls)
     ):
         try:
             import numba.cuda
@@ -837,6 +839,7 @@ def _prepare_ucx_config():
             get_ucx_config("tcp"),
             get_ucx_config("nvlink"),
             get_ucx_config("infiniband"),
+            get_ucx_config("rocm-ipc"),
         ]
     ):
         if get_ucx_config("rdmacm"):
@@ -846,21 +849,20 @@ def _prepare_ucx_config():
             tls = "tcp"
             tls_priority = "tcp"
 
-        # CUDA COPY can optionally be used with ucx -- we rely on the user
+        # CUDA/HIP COPY can optionally be used with ucx -- we rely on the user
         # to define when messages will include CUDA objects.  Note:
-        # defining only the Infiniband flag will not enable cuda_copy
-        if any(
-            [
-                get_ucx_config("nvlink"),
-                get_ucx_config("cuda-copy"),
-            ]
-        ):
-            tls = tls + ",cuda_copy"
+        # defining only the Infiniband flag will not enable cuda_copy/rocm_copy
 
+        if get_ucx_config("nvlink"):
+            tls = tls + ",cuda_copy,cuda_ipc"
+        if get_ucx_config("cuda-copy"):
+            tls = tls + ",cuda_copy"
+        if get_ucx_config("rocm-ipc"):
+            tls = tls + ",rocm_copy,rocm_ipc"
+        if get_ucx_config("rocm-copy"):
+            tls = tls + ",rocm_copy"
         if get_ucx_config("infiniband"):
             tls = "rc," + tls
-        if get_ucx_config("nvlink"):
-            tls = tls + ",cuda_ipc"
 
         high_level_options = {"TLS": tls, "SOCKADDR_TLS_PRIORITY": tls_priority}
 

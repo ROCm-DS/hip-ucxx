@@ -1,6 +1,7 @@
 /**
  * SPDX-FileCopyrightText: Copyright (c) 2022-2023, NVIDIA CORPORATION & AFFILIATES.
- * SPDX-License-Identifier: BSD-3-Clause
+ * SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+ * SPDX-License-Identifier: BSD-3-Clause AND MIT
  */
 #include <cstdio>
 #include <cstring>
@@ -29,7 +30,8 @@ Context::Context(const ConfigMap ucxConfig, const uint64_t featureFlags)
 
   ucp_context_attr_t attr = {.field_mask = UCP_ATTR_FIELD_MEMORY_TYPES};
   ucp_context_query(_handle, &attr);
-  _cudaSupport = (attr.memory_types & UCS_MEMORY_TYPE_CUDA) == UCS_MEMORY_TYPE_CUDA;
+  _cudaSupport = (attr.memory_types & UCS_BIT(UCS_MEMORY_TYPE_CUDA)) ||
+                 (attr.memory_types & UCS_BIT(UCS_MEMORY_TYPE_ROCM));
 
   // UCX supports CUDA if TLS is "all", or one of {"cuda",
   // "cuda_copy", "cuda_ipc"} is in the active transports.
@@ -49,7 +51,7 @@ Context::Context(const ConfigMap ucxConfig, const uint64_t featureFlags)
           auto next  = tls_value.find_first_of(',', current);
           auto field = tls_value.substr(current, next - current);
           current    = next + 1;
-          if (field == "cuda" || field == "cuda_copy") {
+          if (field == "cuda" || field == "cuda_copy" || field == "rocm" || field == "rocm_copy") {
             _cudaSupport = false;
             break;
           }
@@ -57,7 +59,8 @@ Context::Context(const ConfigMap ucxConfig, const uint64_t featureFlags)
       } else {
         // UCX_TLS lists enabled transports, all, or anything with cuda
         // enables cuda support
-        _cudaSupport = tls_value == "all" || tls_value.find("cuda") != std::string::npos;
+        _cudaSupport = tls_value == "all" || (tls_value.find("cuda") != std::string::npos) ||
+                       (tls_value.find("rocm") != std::string::npos);
       }
     }
   }

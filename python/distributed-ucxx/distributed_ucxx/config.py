@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
+# SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 """
 Configuration management for distributed-ucxx.
@@ -30,8 +31,10 @@ def _load_default_config() -> Dict[str, Any]:
         "distributed-ucxx": {
             "version": 1,
             "cuda-copy": None,
+            "rocm-copy": None,
             "tcp": None,
             "nvlink": None,
+            "rocm-ipc": None,
             "infiniband": None,
             "rdmacm": None,
             "create-cuda-context": None,
