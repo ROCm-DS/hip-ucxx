@@ -1,0 +1,10 @@
+# Sphinx build output
+_build/
+
+# Doxygen generated output
+_doxygen
+doxygen/xml/
+doxygen/html/
+
+# Generated TOC (from _toc.yml.in template)
+sphinx/_toc.yml

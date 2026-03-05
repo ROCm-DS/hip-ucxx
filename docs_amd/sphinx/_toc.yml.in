@@ -1,0 +1,31 @@
+defaults:
+  numbered: False
+root: index
+
+subtrees:
+- entries:
+  - file: what-is-hipUCXX.md
+    title: What is hipUCXX?
+
+- caption: Installation
+  entries:
+  - file: install/install.md
+    title: Installing hipUCXX
+  - file: install/build.md
+    title: Building hipUCXX
+
+- caption: How to
+  entries:
+  - file: how-to/using-hipUCXX.md
+    title: Use hipUCXX
+
+- caption: Reference
+  entries:
+  - file: reference/reference-cpp.rst
+    title: C++ API reference
+  - file: reference/reference-python.rst
+    title: Python API reference
+
+- caption: About
+  entries:
+  - file: license.md
