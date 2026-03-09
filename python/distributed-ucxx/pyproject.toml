@@ -9,7 +9,7 @@ requires = [
 ]
 
 [project]
-name = "distributed-hipucxx"
+name = "amd-distributed-hipucxx"
 dynamic = ["version"]
 description = "UCX w/ ROCm communication module for Dask Distributed"
 readme = { file = "README.md", content-type = "text/markdown" }
