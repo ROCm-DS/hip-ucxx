@@ -28,7 +28,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "amd-hipmm=4.0.*",
+    "amd-hipmm==4.0.*",
 ]
 
 [project.urls]

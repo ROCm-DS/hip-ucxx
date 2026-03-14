@@ -7,6 +7,17 @@
 import logging
 import os
 
+# librmm is a dependency of libucxx, so we need to load it first. If the loading fails,
+# we ignore it assuming that the library was installed in a system path that ld can
+# find.
+try:
+    import librmm
+except ModuleNotFoundError:
+    pass
+else:
+    librmm.load_library()
+    del librmm
+
 # If libucx was installed as a wheel, we must request it to load the library symbols.
 # Otherwise, we assume that the library was installed in a system path that ld can find.
 try:

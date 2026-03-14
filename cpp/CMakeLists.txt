@@ -170,7 +170,7 @@ if(UCXX_ENABLE_RMM)
 endif()
 
 # Specify the target module library dependencies
-target_link_libraries(ucxx PUBLIC ucx::ucp ucx::ucs)
+target_link_libraries(ucxx PUBLIC ucx::ucp ucx::ucs Threads::Threads)
 
 # Add Conda library, and include paths if specified
 if(TARGET conda_env)

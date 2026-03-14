@@ -21,7 +21,7 @@
 # cmake-lint: disable=W0106
 
 # Allow users to control which version is used
-if(NOT rapids-cmake-version AND DEFINED ENV{RAPIDS_CMAKE_VERSION})
+if(DEFINED ENV{RAPIDS_CMAKE_VERSION})
   set(rapids-cmake-version $ENV{RAPIDS_CMAKE_VERSION})
 endif()
 

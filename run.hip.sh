@@ -205,6 +205,8 @@ run_py_benchmark() {
 # Let all tests run even if they fail
 set +e
 
+cd "${REPODIR}"
+
 if hasTarget cpp_tests; then
   run_cpp_tests
 fi
@@ -297,7 +299,13 @@ fi
 
 echo "Results Summary"
 echo "--------------------------------------------------------------------------------------------"
+FAILED=0
 for line in "${SUMMARY_RESULTS[@]}"; do
   echo "$line"
+  if [[ "$line" == *"Error Code:"* ]]; then
+    FAILED=1
+  fi
 done
 echo "--------------------------------------------------------------------------------------------"
+
+exit $FAILED

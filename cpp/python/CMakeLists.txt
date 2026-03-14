@@ -54,10 +54,11 @@ if(NOT DEFINED UCXX_BUILD_PYTHON_LIB)
 endif()
 
 rapids_find_package(
-  Python3 REQUIRED COMPONENTS Development
+  Python3 REQUIRED COMPONENTS Development.Module
   BUILD_EXPORT_SET ucxx-python-exports
   INSTALL_EXPORT_SET ucxx-python-exports
 )
+
 # ##################################################################################################
 # * compiler options ------------------------------------------------------------------------------
 rapids_find_package(
@@ -107,10 +108,10 @@ target_compile_definitions(
 
 # Specify the target module library dependencies. We use COMPILE_ONLY for Python because Python does
 # not need to be linked since its symbols will always be available at runtime since we are running
-# inide the Python interpreter, and setting it up this way ensures that we will work if the
+# inside the Python interpreter, and setting it up this way ensures that we will work if the
 # interpreter links to Python statically instead of dynamically.
 target_link_libraries(
-  ucxx_python PUBLIC rmm::rmm ucx::ucp ucxx::ucxx "$<COMPILE_ONLY:Python3::Python>"
+  ucxx_python PUBLIC rmm::rmm ucx::ucp ucxx::ucxx "$<COMPILE_ONLY:Python3::Module>"
 )
 
 # Add Conda library, and include paths if specified

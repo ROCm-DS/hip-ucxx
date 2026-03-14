@@ -49,7 +49,7 @@ endif()
 
 rapids_cython_init()
 
-find_package(Python3 REQUIRED COMPONENTS Development.Embed)
+find_package(Python3 REQUIRED COMPONENTS Development.Module)
 add_subdirectory(ucxx/examples)
 add_subdirectory(ucxx/_lib)
 if(UCXX_BUILD_TESTS)

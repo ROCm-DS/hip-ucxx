@@ -328,7 +328,7 @@ if hasTarget libucxx_py; then
         if [[ -n ${PYTHON_DIST_DIR} ]]; then
             OUTPUT_DIR_ARG="--outdir ${PYTHON_DIST_DIR}"
         fi
-        python -m build --wheel --no-isolation --skip-dependency-check "${CONFIG_SETTINGS[@]/#/-C}" "${OUTPUT_DIR_ARG}"
+        python -m build --wheel --no-isolation --skip-dependency-check "${CONFIG_SETTINGS[@]/#/-C}" ${OUTPUT_DIR_ARG}
     else
         CFG_EXPANDED=()
         for cfg_s in "${CONFIG_SETTINGS[@]}"; do
@@ -374,7 +374,7 @@ if hasTarget ucxx; then
             OUTPUT_DIR_ARG="--outdir ${PYTHON_DIST_DIR}"
         fi
         CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} \
-        python -m build --wheel --no-isolation --skip-dependency-check "${CONFIG_SETTINGS[@]/#/-C}" "${OUTPUT_DIR_ARG}"
+        python -m build --wheel --no-isolation --skip-dependency-check "${CONFIG_SETTINGS[@]/#/-C}" ${OUTPUT_DIR_ARG}
     else
         CFG_EXPANDED=()
         for cfg_s in "${CONFIG_SETTINGS[@]}"; do
@@ -395,7 +395,7 @@ if hasTarget distributed_ucxx; then
         if [[ -n ${PYTHON_DIST_DIR} ]]; then
             OUTPUT_DIR_ARG="--outdir ${PYTHON_DIST_DIR}"
         fi
-        python -m build --wheel --no-isolation --skip-dependency-check "${OUTPUT_DIR_ARG}"
+        python -m build --wheel --no-isolation --skip-dependency-check ${OUTPUT_DIR_ARG}
     else
         python -m pip install --no-build-isolation --no-deps .
     fi

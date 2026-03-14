@@ -4,7 +4,7 @@
 # =================================================================================
 
 set(cython_sources test_cython.pyx)
-set(linked_libraries ucxx::ucxx ucxx::python Python3::Python)
+set(linked_libraries ucxx::ucxx ucxx::python Python3::Module)
 
 rapids_cython_create_modules(
   CXX
