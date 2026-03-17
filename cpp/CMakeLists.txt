@@ -219,7 +219,6 @@ endif()
 # ##################################################################################################
 # * install targets -------------------------------------------------------------------------------
 rapids_cmake_install_lib_dir(lib_dir)
-include(CPack)
 include(GNUInstallDirs)
 
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME ucxx)
@@ -295,3 +294,33 @@ add_custom_target(
 if(rmm_SOURCE_DIR)
   configure_file(scripts/load-pretty-printers.in load-pretty-printers @ONLY)
 endif()
+
+# ##################################################################################################
+# * packaging using CPACK --------------------------------------------------------------------------
+
+install(
+  FILES ${CMAKE_CURRENT_LIST_DIR}/../LICENSE ${CMAKE_CURRENT_LIST_DIR}/../NOTICE.txt
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}
+)
+
+set(CPACK_PACKAGE_NAME "libhipucxx")
+set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+set(CPACK_PACKAGE_VENDOR "Advanced Micro Devices, Inc.")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "C++ interface for UCX communication on AMD GPUs")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/ROCm-DS/hip-ucxx")
+
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_LIST_DIR}/../LICENSE")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_LIST_DIR}/../README.md")
+
+set(CPACK_PACKAGING_INSTALL_PREFIX "/opt/rocm-ds" CACHE PATH "Package install prefix.")
+
+set(CPACK_GENERATOR "RPM")
+set(CPACK_RPM_PACKAGE_LICENSE "BSD-3-Clause AND MIT")
+set(CPACK_RPM_PACKAGE_GROUP "Development/Libraries")
+set(CPACK_RPM_PACKAGE_REQUIRES "hipmm >= 4.0.0")
+set(CPACK_RPM_PACKAGE_URL "${CPACK_PACKAGE_HOMEPAGE_URL}")
+set(CPACK_RPM_FILE_NAME "RPM-DEFAULT")
+
+include(CPack)
