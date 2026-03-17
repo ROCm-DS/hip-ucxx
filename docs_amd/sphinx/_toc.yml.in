@@ -18,6 +18,12 @@ subtrees:
   entries:
   - file: how-to/using-hipUCXX.md
     title: Use hipUCXX
+  - file: how-to/configuration.md
+    title: Configuration
+  - file: how-to/deployment.md
+    title: Deployment
+  - file: how-to/optimizations.md
+    title: Optimizations
 
 - caption: Reference
   entries:
@@ -25,6 +31,16 @@ subtrees:
     title: C++ API reference
   - file: reference/reference-python.rst
     title: Python API reference
+  - file: reference/send-recv.md
+    title: Send/Recv internals
+  - file: reference/os-limits.md
+    title: Operating system limits
+  - file: reference/ucx-debug.md
+    title: Debugging UCX
+  - file: reference/transport-monitoring.md
+    title: Monitoring transports
+  - file: reference/glossary.md
+    title: Glossary
 
 - caption: About
   entries:

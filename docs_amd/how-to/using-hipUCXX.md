@@ -140,3 +140,150 @@ asyncio.run(main())
 
 For additional Python examples, see the `python/ucxx/ucxx/examples/` directory
 in the repository.
+
+## Multi-process server/client example
+
+The examples above run server and client within the same process. The
+following demonstrates a more realistic multi-process pattern where server
+and client run in separate terminals.
+
+### Send/Recv NumPy arrays
+
+**Process 1 -- Server** (run in one terminal):
+
+```python
+import asyncio
+import ucxx
+import numpy as np
+
+n_bytes = 2**30
+host = ucxx.get_address()  # specify interface with ifname="..." if needed
+port = 13337
+
+
+async def send(ep):
+    arr = np.empty(n_bytes, dtype="u1")
+    await ep.recv(arr)
+    assert np.count_nonzero(arr) == np.array(0, dtype=np.int64)
+    print("Received NumPy array")
+
+    arr += 1
+    print("Sending incremented NumPy array")
+    await ep.send(arr)
+
+    lf.close()
+
+
+async def main():
+    global lf
+    lf = ucxx.create_listener(send, port)
+
+    while not lf.closed:
+        await asyncio.sleep(0.1)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+**Process 2 -- Client** (run in a second terminal):
+
+```python
+import asyncio
+import ucxx
+import numpy as np
+
+port = 13337
+n_bytes = 2**30
+
+
+async def main():
+    host = ucxx.get_address()  # specify interface with ifname="..." if needed
+    ep = await ucxx.create_endpoint(host, port)
+    msg = np.zeros(n_bytes, dtype="u1")
+
+    print("Send Original NumPy array")
+    await ep.send(msg)
+
+    print("Receive Incremented NumPy array")
+    resp = np.empty_like(msg)
+    await ep.recv(resp)
+    np.testing.assert_array_equal(msg + 1, resp)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### Send/Recv amd-cupy arrays
+
+```{note}
+If you are passing amd-cupy arrays between GPUs and want to use
+[ROCm-IPC](https://rocm.docs.amd.com/en/latest/) for GPU-to-GPU
+transfers, ensure you have correctly set `UCX_TLS` to include
+`rocm_ipc`. See the [Configuration](configuration.md) page for details.
+```
+
+**Process 1 -- Server** (run in one terminal):
+
+```python
+import asyncio
+import ucxx
+import cupy as cp
+
+n_bytes = 2**30
+host = ucxx.get_address()  # specify interface with ifname="..." if needed
+port = 13337
+
+
+async def send(ep):
+    arr = cp.empty(n_bytes, dtype="u1")
+    await ep.recv(arr)
+    assert cp.count_nonzero(arr) == cp.array(0, dtype=cp.int64)
+    print("Received amd-cupy array")
+
+    arr += 1
+    print("Sending incremented amd-cupy array")
+    await ep.send(arr)
+
+    lf.close()
+
+
+async def main():
+    global lf
+    lf = ucxx.create_listener(send, port)
+
+    while not lf.closed:
+        await asyncio.sleep(0.1)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+**Process 2 -- Client** (run in a second terminal):
+
+```python
+import asyncio
+import ucxx
+import cupy as cp
+
+port = 13337
+n_bytes = 2**30
+
+
+async def main():
+    host = ucxx.get_address()  # specify interface with ifname="..." if needed
+    ep = await ucxx.create_endpoint(host, port)
+    msg = cp.zeros(n_bytes, dtype="u1")
+
+    print("Send Original amd-cupy array")
+    await ep.send(msg)
+
+    print("Receive Incremented amd-cupy array")
+    resp = cp.empty_like(msg)
+    await ep.recv(resp)
+    cp.testing.assert_array_equal(msg + 1, resp)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
