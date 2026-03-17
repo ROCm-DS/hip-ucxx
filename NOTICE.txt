@@ -1,3 +1,22 @@
+==============================================================================
+
+hip-ucxx: C++ interface for UCX communication on AMD GPUs
+
+This project is derived from the UCXX project by NVIDIA Corporation,
+which is licensed under the BSD 3-Clause License (see LICENSE).
+
+Parts of this software are based on, or derived from, code covered under
+the BSD 3-Clause License. You may not use such portions except in
+compliance with the License. A copy of the BSD 3-Clause License is
+provided in LICENSE and available at:
+
+   https://opensource.org/licenses/BSD-3-Clause
+
+Additional modifications and new components introduced by AMD are provided
+under the MIT License.
+
+==============================================================================
+
 MIT License
 
 Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
@@ -19,3 +38,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+==============================================================================

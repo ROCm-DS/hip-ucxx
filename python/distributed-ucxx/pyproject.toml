@@ -17,7 +17,8 @@ authors = [
     { name = "Advanced Micro Devices, Inc." },
     { name = "NVIDIA Corporation" },
 ]
-license = { text = "BSD-3-Clause" }
+license = { text = "BSD-3-Clause AND MIT" }
+license-files = ["LICENSE", "NOTICE.txt"]
 requires-python = ">=3.10"
 dependencies = [
     "numba-hip",
