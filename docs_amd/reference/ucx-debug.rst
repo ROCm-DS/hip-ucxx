@@ -102,7 +102,7 @@ ROCm-IPC performance
 Experimental debugging
 ----------------------
 
-A list of problems we have run into along the way while trying to understand performance issues with UCX/hipUCXX:
+A list of problems we have run into along the way while trying to understand performance issues with UCX and hip-ucxx:
 
 - System-wide settings environment variables. For example, we saw a system with ``UCX_MEM_MMAP_HOOK_MODE`` set to ``none``. Unsetting this env var resolved problems: https://github.com/rapidsai/ucx-py/issues/616. One can quickly check system wide variables with ``env | grep ^UCX_``.
 

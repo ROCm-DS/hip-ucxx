@@ -1,11 +1,11 @@
 .. meta::
-  :description: hipUCXX documentation and API reference library
+  :description: hip-ucxx documentation and API reference library
   :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP, Python
 
-.. _hipucxx-python:
+.. _hip-ucxx-python:
 
 *********************************
-hipUCXX Python API documentation
+hip-ucxx Python API documentation
 *********************************
 
 .. toctree::

@@ -4,7 +4,7 @@
 Operating system limits
 =======================
 
-UCX can be affected by a variety of limits, not just defined by UCX itself but also by the operating system. In this section we describe some of the limits that may be encountered by the user when running hipUCXX or just UCX alone.
+UCX can be affected by a variety of limits, not just defined by UCX itself but also by the operating system. In this section we describe some of the limits that may be encountered by the user when running hip-ucxx or just UCX alone.
 
 File descriptors
 ----------------

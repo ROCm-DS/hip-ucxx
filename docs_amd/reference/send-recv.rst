@@ -19,9 +19,9 @@ Below we go into more detail as we create an echo server in UCX and compare with
 Server
 ------
 
-First, we create the server -- in hipUCXX, we create a server with ``create_listener`` and build a blocking call to keep the listener alive. The listener invokes a callback function when an incoming connection is accepted. This callback should take in an ``Endpoint`` as an argument for ``send``/``recv``.
+First, we create the server -- in hip-ucxx, we create a server with ``create_listener`` and build a blocking call to keep the listener alive. The listener invokes a callback function when an incoming connection is accepted. This callback should take in an ``Endpoint`` as an argument for ``send``/``recv``.
 
-For Python sockets, the server is similarly constructed. ``bind`` opens a connection on a given port and ``accept`` is Python Sockets' blocking call for incoming connections. In both hipUCXX and Sockets, once a connection has been made, both receive data and echo the same data back to the client.
+For Python sockets, the server is similarly constructed. ``bind`` opens a connection on a given port and ``accept`` is Python Sockets' blocking call for incoming connections. In both hip-ucxx and Sockets, once a connection has been made, both receive data and echo the same data back to the client.
 
 **UCX:**
 
@@ -57,7 +57,7 @@ For Python sockets, the server is similarly constructed. ``bind`` opens a connec
 Client
 ------
 
-For Sockets, on the client-side we connect to the established host/port combination and send data to the socket. The client-side is a bit more interesting in hipUCXX: ``create_endpoint`` also uses a host/port combination to establish a connection, and after an ``Endpoint`` is created, ``hello, world`` is passed back and forth between the client and server.
+For Sockets, on the client-side we connect to the established host/port combination and send data to the socket. The client-side is a bit more interesting in hip-ucxx: ``create_endpoint`` also uses a host/port combination to establish a connection, and after an ``Endpoint`` is created, ``hello, world`` is passed back and forth between the client and server.
 
 **UCX:**
 
@@ -101,7 +101,7 @@ Again, an ``Endpoint`` sends and receives with `unique tags <http://openucx.gith
            guarantee_msg_order=guarantee_msg_order,
        )
 
-Most users will not care about these details but developers and interested network enthusiasts may. Looking at the DEBUG (``UCXPY_LOG_LEVEL=DEBUG``) output of the client can help clarify what hipUCXX/UCX is doing under the hood:
+Most users will not care about these details but developers and interested network enthusiasts may. Looking at the DEBUG (``UCXPY_LOG_LEVEL=DEBUG``) output of the client can help clarify what hip-ucxx and UCX is doing under the hood:
 
 .. code-block:: text
 

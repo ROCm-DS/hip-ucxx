@@ -9,6 +9,8 @@ subtrees:
 
 - caption: Installation
   entries:
+  - file: install/system-requirements.rst
+    title: System requirements
   - file: install/install.rst
     title: Installing hipUCXX
   - file: install/build.rst
@@ -19,7 +21,7 @@ subtrees:
   - file: how-to/using-hipUCXX.rst
     title: Use hipUCXX
   - file: how-to/configuration.rst
-    title: Configuration
+    title: Configure hipUCXX
   - file: how-to/deployment.rst
     title: Deployment
   - file: how-to/optimizations.rst
@@ -39,9 +41,9 @@ subtrees:
     title: Debugging UCX
   - file: reference/transport-monitoring.rst
     title: Monitoring transports
-  - file: reference/glossary.rst
-    title: Glossary
 
 - caption: About
   entries:
+  - file: reference/glossary.rst
+    title: Glossary
   - file: license.rst

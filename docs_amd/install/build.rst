@@ -1,49 +1,20 @@
 .. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
 .. SPDX-License-Identifier: MIT
 
-Building hipUCXX from source
+.. _building-ucxx:
+
+*****************************
+Building hip-ucxx from source
+*****************************
+
+The following instructions provide steps to build and test hip-ucxx from source files provided in the https://github.com/AMD-AIOSS/hip-ucxx repository. To install ``hip-ucxx`` for end users, see :ref:`installing-ucxx`.
+
+Requirements and dependencies
 =============================
 
-hipUCXX provides C++ and Python APIs. The following instructions provide steps to build and test hipUCXX from source files provided in the https://github.com/AMD-AIOSS/hipUCXX repository. To install hipUCXX for end users, see :doc:`Installing hipUCXX <./install>`.
+See :ref:`system-requirements` for information related to supported operating systems, ROCm versions, and AMD GPUs before building ``hip-ucxx``.
 
-Tested on the following GPUs
------------------------------
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 25 20 30
-
-   * - AMD Instinct GPU
-     - Architecture
-     - Wavefront Size
-     - LLVM target
-   * - MI210
-     - CDNA2
-     - 64
-     - gfx90a
-   * - MI250
-     - CDNA2
-     - 64
-     - gfx90a
-   * - MI250X
-     - CDNA2
-     - 64
-     - gfx90a
-   * - MI300A
-     - CDNA3
-     - 64
-     - gfx942
-   * - MI300X
-     - CDNA3
-     - 64
-     - gfx942
-
-Dependencies
-------------
-
-hipUCXX builds against the AMD ROCm software stack, that is the ROCm runtime, HIP compiler tool-chain, and a GPU driver that matches your ROCm version.
-
-Install ROCm 7.2, or the minimum version supported by the GPUs listed above, and make sure the ``rocminfo`` and ``hipcc`` commands are in your ``PATH``. For more information, see `ROCm Installation <https://rocm.docs.amd.com/projects/install-on-linux/en/latest/>`_.
+Building ``hip-ucxx`` uses the following tools and dependencies.
 
 .. list-table::
    :header-rows: 1
@@ -67,10 +38,7 @@ Install ROCm 7.2, or the minimum version supported by the GPUs listed above, and
      - ≥ 1.8.20 (for documentation)
 
 C++ library
------------
-
-Building with ``build.hip.sh``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===========
 
 The ``build.hip.sh`` script simplifies the build process. Use it to build the C++ library, tests, examples, and benchmarks.
 
@@ -92,7 +60,7 @@ The ``build.hip.sh`` script simplifies the build process. Use it to build the C+
    ./build.hip.sh cxx-all
 
 Using CMake directly
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 
 For more fine-grained control over the build, invoke CMake directly:
 
@@ -147,7 +115,7 @@ CMake build options:
      - Build Python API support library
 
 Running C++ tests
-^^^^^^^^^^^^^^^^^
+-----------------
 
 .. code-block:: bash
 
@@ -155,10 +123,9 @@ Running C++ tests
    ctest --test-dir ./tests
 
 Python library
---------------
+==============
 
-Building Python packages with ``build.hip.sh``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``build.hip.sh`` script simplifies the building Python packages, tests, examples, and benchmarks.
 
 .. code-block:: bash
 
@@ -171,23 +138,8 @@ Building Python packages with ``build.hip.sh``
    # Build all Python targets
    ./build.hip.sh py-all
 
-Building Python wheels manually
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: bash
-
-   # Build and install libucxx Python module
-   cd <UCXX_ROOT>/python/libucxx/
-   pip wheel -w dist -v --no-build-isolation --disable-pip-version-check .
-   pip install dist/libucxx-*.whl
-
-   # Build and install ucxx Python module
-   cd <UCXX_ROOT>/python/ucxx/
-   pip wheel -w dist -v --no-build-isolation --disable-pip-version-check .
-   pip install dist/ucxx-*.whl
-
 Build options
-^^^^^^^^^^^^^
+-------------
 
 The ``build.hip.sh`` script accepts additional options:
 
@@ -220,8 +172,23 @@ The ``build.hip.sh`` script accepts additional options:
    * - ``clean``
      - Remove existing build artifacts
 
+Building Python wheels manually
+-------------------------------
+
+.. code-block:: bash
+
+   # Build and install libucxx Python module
+   cd <UCXX_ROOT>/python/libucxx/
+   pip wheel -w dist -v --no-build-isolation --disable-pip-version-check .
+   pip install dist/libucxx-*.whl
+
+   # Build and install ucxx Python module
+   cd <UCXX_ROOT>/python/ucxx/
+   pip wheel -w dist -v --no-build-isolation --disable-pip-version-check .
+   pip install dist/ucxx-*.whl
+
 Building documentation
-----------------------
+======================
 
 Prepare the environment to build documentation using the following commands:
 

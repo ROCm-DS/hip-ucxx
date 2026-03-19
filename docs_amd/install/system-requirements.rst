@@ -11,7 +11,7 @@
 System requirements
 *******************
 
-This page lists the system requirements for using ``dask-hip``.
+This page lists the system requirements for using ``hip-ucxx``.
 
 * Operating Systems: many_linux version 2.28. Ubuntu 22.04 is recommended. 
 * ROCm version: 7.2.0

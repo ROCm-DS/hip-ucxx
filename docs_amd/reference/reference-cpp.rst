@@ -1,11 +1,11 @@
 .. meta::
-  :description: hipUCXX documentation and API reference library
+  :description: hip-ucxx documentation and API reference library
   :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP
 
-.. _hipucxx-cpp:
+.. _hip-ucxx-cpp:
 
 ===============================
-hipUCXX C++ API documentation
+hip-ucxx C++ API documentation
 ===============================
 
 .. toctree::

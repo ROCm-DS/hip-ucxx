@@ -1,16 +1,19 @@
 .. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
 .. SPDX-License-Identifier: MIT
 
-Using hipUCXX
-=============
+**************
+Using hip-ucxx
+**************
 
-Example code demonstrating the use of the hipUCXX library is provided
-in the repository. Both C++ and Python examples are available. These
-examples can be used as templates to build your own application using
-hipUCXX or to add hipUCXX to existing projects.
+Example code demonstrating the use of the ``hip-ucxx`` library is provided in the repository, and in
+the following text. Both C++ and Python examples are available. These examples can be used as
+templates for building your own application using ``hip-ucxx``, or to add it to existing projects.
 
 C++ examples
-------------
+============
+
+The C++ examples are located in `cpp/examples <https://github.com/AMD-AIOSS/hip-ucxx/blob/amd-integration/cpp/examples>`_.
+Refer to the :ref:`building-ucxx` for instructions on setting up your developer environment.
 
 To build the C++ examples, use the provided ``build.hip.sh`` script:
 
@@ -18,14 +21,10 @@ To build the C++ examples, use the provided ``build.hip.sh`` script:
 
    ./build.hip.sh libucxx libucxx-ex
 
-The C++ examples are located in ``cpp/examples/``. Refer to the
-:doc:`Building hipUCXX from source <../install/build>` documentation
-for instructions on how to set up your developer environment.
-
 Basic client/server example
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
 
-The ``basic`` example demonstrates the core hipUCXX workflow: creating a context,
+The ``basic`` example demonstrates the core ``hip-ucxx`` workflow: creating a context,
 worker, listener, and endpoint, then performing tag-based send/receive operations.
 This example runs both a server and a client within the same process.
 
@@ -39,7 +38,7 @@ The key steps in the example are:
 6. Wait for all requests to complete using the worker's progress mechanism.
 
 Running the example
-"""""""""""""""""""
+-------------------
 
 .. code-block:: bash
 
@@ -53,7 +52,7 @@ Output:
    Example completed successfully
 
 Code walkthrough
-"""""""""""""""""
+----------------
 
 The setup phase creates the fundamental UCXX objects:
 
@@ -77,10 +76,10 @@ Tag-based communication uses ``tagSend()`` and ``tagRecv()``:
        worker->progress();
    send_request->checkError();
 
-Linking against hipUCXX in CMake
-"""""""""""""""""""""""""""""""""
+Linking against hip-ucxx in CMake
+--------------------------------
 
-To use hipUCXX in your own CMake project:
+To use ``hip-ucxx`` in your own CMake project:
 
 .. code-block:: cmake
 
@@ -88,13 +87,13 @@ To use hipUCXX in your own CMake project:
    target_link_libraries(your_target PRIVATE ucxx::ucxx)
 
 Python examples
----------------
+===============
 
 The Python API provides both a low-level interface (via ``ucxx.core``) and an
 async-friendly interface (via ``ucxx._lib_async``).
 
 Basic Python usage
-^^^^^^^^^^^^^^^^^^
+------------------
 
 The ``ucxx.core`` module provides functions to initialize UCX, create listeners,
 and establish communication:
@@ -119,7 +118,7 @@ and establish communication:
    print(f"Listening on port {listener.port}")
 
 Async communication with ApplicationContext
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------------
 
 For more advanced usage, the ``ApplicationContext`` provides a higher-level
 async API:
@@ -152,14 +151,14 @@ For additional Python examples, see the ``python/ucxx/ucxx/examples/`` directory
 in the repository.
 
 Multi-process server/client example
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------
 
 The examples above run server and client within the same process. The
 following demonstrates a more realistic multi-process pattern where server
 and client run in separate terminals.
 
 Send/Recv NumPy arrays
-"""""""""""""""""""""""
+----------------------
 
 **Process 1 -- Server** (run in one terminal):
 
@@ -227,7 +226,7 @@ Send/Recv NumPy arrays
        asyncio.run(main())
 
 Send/Recv amd-cupy arrays
-""""""""""""""""""""""""""
+-------------------------
 
 .. note::
    If you are passing amd-cupy arrays between GPUs and want to use

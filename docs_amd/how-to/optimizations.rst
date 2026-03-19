@@ -4,16 +4,16 @@
 Optimizations
 =============
 
-This is a list of built-in optimizations in hipUCXX. Most of them target Python usage, but may be useful in C++ applications depending on their design and needs.
+This is a list of built-in optimizations in hip-ucxx. Most of them target Python usage, but may be useful in C++ applications depending on their design and needs.
 
 Delayed Submission
 ------------------
 
 Move transfer submissions (``ucp_{tag,stream}_{send,recv}_nb)``) to the worker progress task.
 
-Most times UCX applications will submit transfer requests immediately from the application thread, returning a ``ucs_status_ptr_t`` which is then checked for immediate completion or not, in the latter case a callback will execute once that completes during some ``ucp_worker_progress()`` call. When writing Python bindings for C/C++ code, it is often good practice to release the GIL instead of holding it while the C/C++ code runs, and thus allowing other threads to acquire the GIL while the low-level piece of code executes. For hipUCXX that would mean the GIL would be released and then reacquired by the C++ code almost instantaneously, or not released at all. To prevent that, hipUCXX allows submitting a transfer request intent, while delaying the ``ucp_{tag,stream}_{send,recv}_nb`` request for a future time, for example, during the worker progress task.
+Most times UCX applications will submit transfer requests immediately from the application thread, returning a ``ucs_status_ptr_t`` which is then checked for immediate completion or not, in the latter case a callback will execute once that completes during some ``ucp_worker_progress()`` call. When writing Python bindings for C/C++ code, it is often good practice to release the GIL instead of holding it while the C/C++ code runs, and thus allowing other threads to acquire the GIL while the low-level piece of code executes. For hip-ucxx that would mean the GIL would be released and then reacquired by the C++ code almost instantaneously, or not released at all. To prevent that, hip-ucxx allows submitting a transfer request intent, while delaying the ``ucp_{tag,stream}_{send,recv}_nb`` request for a future time, for example, during the worker progress task.
 
-The UCX requests also require the UCX spinlock to be acquired. If there is a worker progress task running, this would effectively mean the application thread and the worker progress thread competing for the UCX spinlock simultaneously. Now, if one of the threads has hold of the UCX spinlock and tries to achieve also the GIL while the other thread has the GIL but attempting to acquire the UCX spinlock, that would lead to a deadlock. The solution for this problem in hipUCXX is to prevent the application thread from ever (or almost ever) acquiring the UCX spinlock, while preventing the worker progress thread from acquiring the GIL. This last problem is solved by using a `Notifier Thread`_.
+The UCX requests also require the UCX spinlock to be acquired. If there is a worker progress task running, this would effectively mean the application thread and the worker progress thread competing for the UCX spinlock simultaneously. Now, if one of the threads has hold of the UCX spinlock and tries to achieve also the GIL while the other thread has the GIL but attempting to acquire the UCX spinlock, that would lead to a deadlock. The solution for this problem in hip-ucxx is to prevent the application thread from ever (or almost ever) acquiring the UCX spinlock, while preventing the worker progress thread from acquiring the GIL. This last problem is solved by using a `Notifier Thread`_.
 
 Flowchart
 ^^^^^^^^^
@@ -293,7 +293,7 @@ A second case is when the transfer does not complete immediately and must be pro
 Enable/Disable
 ^^^^^^^^^^^^^^
 
-Given hipUCXX C++ layer is Python-agnostic, it must be possible to disable all the Python-specific code at compile-time. Notifying Python ``Future`` can be enabled at C++ compile time via the ``-DUCXX_ENABLE_PYTHON=1`` definition, which is default for ``setuptools`` builds. When ``-DUCXX_ENABLE_PYTHON=0``, all notification happens via coroutines that continuously check for completion of a ``UCXXRequest`` and yield for other async tasks, which tend to be CPU-intensive.
+Given hip-ucxx C++ layer is Python-agnostic, it must be possible to disable all the Python-specific code at compile-time. Notifying Python ``Future`` can be enabled at C++ compile time via the ``-DUCXX_ENABLE_PYTHON=1`` definition, which is default for ``setuptools`` builds. When ``-DUCXX_ENABLE_PYTHON=0``, all notification happens via coroutines that continuously check for completion of a ``UCXXRequest`` and yield for other async tasks, which tend to be CPU-intensive.
 
 Multi-buffer Transfers
 ----------------------
@@ -304,7 +304,7 @@ Applications like Dask often must send/receive multiple buffers for a single rea
 2. Send/receive size and type (host or ROCm) of each frame;
 3. Send/allocate-and-receive each frame.
 
-This results in at least 3 send/receive operations, and potentially more when multiple buffers are transferred. To avoid submitting multiple async operations and then waiting on each one individually, hipUCXX introduces a new ``tag_send_multi``/``tag_recv_multi`` API to simplify that and reduce Python overhead.
+This results in at least 3 send/receive operations, and potentially more when multiple buffers are transferred. To avoid submitting multiple async operations and then waiting on each one individually, hip-ucxx introduces a new ``tag_send_multi``/``tag_recv_multi`` API to simplify that and reduce Python overhead.
 
 On the sender side it works by assembling a ``Header`` object with a pre-defined size (currently ``100`` frames) combining the number of frames included, whether there is a next ``Header`` (in case the number of frames is larger than the pre-defined size), the buffer pointers, buffer types (host or ROCm) and buffer sizes. The ``Header`` is then sent as a single ``tag`` message, followed by all buffers in the order in which each buffer appears in the ``Header``.
 
@@ -405,4 +405,4 @@ The final step is to look at the callbacks for sending and receiving frames, as 
 Enable/Disable
 ^^^^^^^^^^^^^^
 
-Since multi-buffer transfers are a new feature in hipUCXX and do not have an equivalent in either UCX or UCX-Py, it requires a new API. The new API is composed of ``Endpoint.send_multi(list_of_buffers)`` and ``list_of_buffers = Endpoint.recv_multi()``.
+Since multi-buffer transfers are a new feature in hip-ucxx and do not have an equivalent in either UCX or UCX-Py, it requires a new API. The new API is composed of ``Endpoint.send_multi(list_of_buffers)`` and ``list_of_buffers = Endpoint.recv_multi()``.
