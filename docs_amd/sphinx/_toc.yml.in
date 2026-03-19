@@ -4,25 +4,25 @@ root: index
 
 subtrees:
 - entries:
-  - file: what-is-hipUCXX.md
+  - file: what-is-hipUCXX.rst
     title: What is hipUCXX?
 
 - caption: Installation
   entries:
-  - file: install/install.md
+  - file: install/install.rst
     title: Installing hipUCXX
-  - file: install/build.md
+  - file: install/build.rst
     title: Building hipUCXX
 
 - caption: How to
   entries:
-  - file: how-to/using-hipUCXX.md
+  - file: how-to/using-hipUCXX.rst
     title: Use hipUCXX
-  - file: how-to/configuration.md
+  - file: how-to/configuration.rst
     title: Configuration
-  - file: how-to/deployment.md
+  - file: how-to/deployment.rst
     title: Deployment
-  - file: how-to/optimizations.md
+  - file: how-to/optimizations.rst
     title: Optimizations
 
 - caption: Reference
@@ -31,17 +31,17 @@ subtrees:
     title: C++ API reference
   - file: reference/reference-python.rst
     title: Python API reference
-  - file: reference/send-recv.md
+  - file: reference/send-recv.rst
     title: Send/Recv internals
-  - file: reference/os-limits.md
+  - file: reference/os-limits.rst
     title: Operating system limits
-  - file: reference/ucx-debug.md
+  - file: reference/ucx-debug.rst
     title: Debugging UCX
-  - file: reference/transport-monitoring.md
+  - file: reference/transport-monitoring.rst
     title: Monitoring transports
-  - file: reference/glossary.md
+  - file: reference/glossary.rst
     title: Glossary
 
 - caption: About
   entries:
-  - file: license.md
+  - file: license.rst
