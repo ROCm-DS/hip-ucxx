@@ -11,7 +11,7 @@
 hip-ucxx documentation
 ********************************************************************
 
-hip-ucxx is a C++ wrapper library around `UCX <https://www.openucx.org/>`_ (Unified Communication X), providing a modern object-oriented API for high-performance inter-process and inter-node communication on AMD GPUs. It is part of the AMD ROCm Data Science toolkit (ROCm-DS), an open-source software collection for high-performance data science applications. Forked from the NVIDIA® RAPIDS® UCXX project, hip-ucxx brings the same communication capabilities to the :doc:`HIP <hip:index>`/:doc:`ROCm <rocm:index>` stack. It offers both a modern C++ interface for systems developers and Python bindings with full async support for rapid prototyping and distributed computing workflows. For more information, see :doc:`What is hip-ucxx? <what-is-hip-ucxx>`
+hip-ucxx is a C++ wrapper library around `UCX <https://www.openucx.org/>`_ (Unified Communication X), providing a modern object-oriented API for high-performance inter-process and inter-node communication on AMD GPUs. It is part of the AMD ROCm Data Science toolkit (ROCm-DS), an open-source software collection for high-performance data science applications. Forked from the NVIDIA® RAPIDS® UCXX project, hip-ucxx brings the same communication capabilities to the :doc:`HIP <hip:index>`/:doc:`ROCm <rocm:index>` stack. It offers both a modern C++ interface for systems developers and Python bindings with full async support for rapid prototyping and distributed computing workflows. For more information, see :doc:`What is hipUCXX? <what-is-hipUCXX>`
 
 The hip-ucxx code is open and hosted at `https://github.com/AMD-AIOSS/hip-ucxx <https://github.com/AMD-AIOSS/hip-ucxx>`_.
 
@@ -26,15 +26,19 @@ The hip-ucxx code is open and hosted at `https://github.com/AMD-AIOSS/hip-ucxx <
 
   .. grid-item-card:: How to
 
-    * :doc:`Use hip-ucxx <how-to/using-hip-ucxx>`
+    * :doc:`Use hip-ucxx <how-to/using-hipUCXX>`
     * :doc:`Configure hip-ucxx <how-to/configuration>`
-    * :doc:`Optimization <how-to/optimization>`
+    * :doc:`Optimization <how-to/optimizations>`
     * :doc:`Deployment <how-to/deployment>`
 
   .. grid-item-card:: API reference
 
     * :ref:`C++ API reference <hip-ucxx-cpp>`
     * :ref:`Python API reference <hip-ucxx-python>`
+    * :doc:`Send/Receive internals <reference/send-recv>`
+    * :doc:`Operating system limits <reference/os-limits>`
+    * :doc:`Debugging UCX <reference/ucx-debug>`
+    * :doc:`Monitoring transports <reference/transport-monitoring>`
 
 To contribute to the documentation refer to `Contributing to ROCm-DS  <https://rocm.docs.amd.com/projects/rocm-ds/en/latest/contribute/contributing.html>`_.
 

@@ -51,7 +51,8 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.napoleon",
     "sphinx_copybutton",
-    "autoapi.extension"
+    "autoapi.extension",
+    "sphinxcontrib.mermaid"
 ]
 
 myst_heading_anchors = 4

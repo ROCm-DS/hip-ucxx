@@ -12,7 +12,7 @@ astroid==4.1.1
     # via sphinx-autoapi
 asttokens==3.0.1
     # via stack-data
-attrs==25.4.0
+attrs==26.1.0
     # via
     #   jsonschema
     #   jupyter-cache
@@ -72,7 +72,7 @@ idna==3.11
     # via requests
 imagesize==2.0.0
     # via sphinx
-importlib-metadata==8.7.1
+importlib-metadata==9.0.0
     # via
     #   jupyter-cache
     #   myst-nb
@@ -91,6 +91,7 @@ jinja2==3.1.6
     #   myst-parser
     #   sphinx
     #   sphinx-autoapi
+    #   sphinxcontrib-mermaid
 jsonschema==4.26.0
     # via nbformat
 jsonschema-specifications==2025.9.1
@@ -196,6 +197,7 @@ pyyaml==6.0.3
     #   rocm-docs-core
     #   sphinx-autoapi
     #   sphinx-external-toc
+    #   sphinxcontrib-mermaid
 pyzmq==27.1.0
     # via
     #   ipykernel
@@ -238,7 +240,8 @@ sphinx==9.1.0
     #   sphinx-external-toc
     #   sphinx-multitoc-numbering
     #   sphinx-notfound-page
-sphinx-autoapi==3.7.0
+    #   sphinxcontrib-mermaid
+sphinx-autoapi==3.8.0
     # via -r requirements.in
 sphinx-book-theme==1.2.0
     # via rocm-docs-core
@@ -260,6 +263,8 @@ sphinxcontrib-htmlhelp==2.1.0
     # via sphinx
 sphinxcontrib-jsmath==1.0.1
     # via sphinx
+sphinxcontrib-mermaid==2.0.1
+    # via -r requirements.in
 sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
