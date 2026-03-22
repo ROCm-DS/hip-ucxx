@@ -1,196 +1,144 @@
-# UCXX
+# hip-ucxx
 
-UCXX is an object-oriented C++ interface for UCX, with native support for Python bindings.
+hip-ucxx is an object-oriented C++ interface for [UCX](https://www.openucx.org/),
+with native Python bindings, designed for GPU-direct communication on AMD GPUs
+using HIP/ROCm. It is derived from the
+[UCXX](https://github.com/rapidsai/ucxx) project by NVIDIA Corporation
+and is part of the [ROCm-DS](https://github.com/ROCm-DS) ecosystem.
 
-## Building
+hip-ucxx supports multiple transport methods including tag matching, active
+messages, and stream-based communication over InfiniBand, ROCm-IPC/XGMI, shared
+memory, and TCP. It also provides a Dask Distributed communication backend for
+GPU-accelerated distributed computing.
 
-### Environment setup
+For full documentation, see the
+[hip-ucxx documentation](https://rocm.docs.amd.com/projects/hip-ucxx/en/latest/).
 
-Before starting it is necessary to have the necessary dependencies installed. The simplest way to get started is to install [Miniforge](https://github.com/conda-forge/miniforge) and then to create and activate an environment with the provided development file, for CUDA 13.x:
-
-```
-$ conda env create -n ucxx -f conda/environments/all_cuda-130_arch-x86_64.yaml
-```
-
-And then activate the newly created environment:
-
-```
-$ conda activate ucxx
-```
-
-#### Faster conda dependency resolution
-
-The procedure aforementioned should complete without issues, but it may be slower than necessary. One alternative to speed up dependency resolution is to install [mamba](https://mamba.readthedocs.io/en/latest/) before creating the new environment. After installing Miniforge, mamba can be installed with:
+## Directory layout
 
 ```
-$ conda install -c conda-forge mamba
+hip-ucxx/
+├── cpp/                  C++ library
+│   ├── include/ucxx/       Public headers
+│   ├── src/                Implementation
+│   ├── tests/              C++ tests
+│   ├── benchmarks/         C++ benchmarks
+│   ├── examples/           C++ examples (basic client/server)
+│   └── python/             C++ sources for Python bindings
+├── python/               Python packages
+│   ├── ucxx/               Core Python module (ucxx.core, ucxx._lib_async)
+│   ├── libucxx/            Python wrapper that loads the C++ shared library
+│   └── distributed-ucxx/   Dask Distributed communication backend
+├── docs_amd/             Sphinx documentation source
+├── cmake/                CMake helper modules
+├── scripts/              Utility scripts (SPDX checks)
+├── build.hip.sh          Build script for C++ and Python components
+└── run.hip.sh            Run script for tests, benchmarks, and examples
 ```
 
-After that, one can proceed as before, but simply replacing `conda` with `mamba` in the environment creation command:
+## Environment setup
 
-```
-$ mamba env create -n ucxx -f conda/environments/all_cuda-130_arch-x86_64.yaml
-$ conda activate ucxx
-```
+Create and activate a Python environment before building or installing
+hip-ucxx. Either Conda or a Python virtual environment can be used.
 
-### Convenience Script
+**Conda:**
 
-For convenience, we provide the `./build.sh` script. By default, it will build and install both C++ and Python libraries. For a detailed description on available options please check `./build.sh --help`.
-
-Building C++ and Python libraries manually is also possible, see instructions on building [C++](#c) and [Python](#python).
-
-Additionally, there is a `./build_and_run.sh` script that will call `./build.sh` to build everything as well as running C++ and Python tests and a few benchmarks. Similarly, details on existing options can be queried with `./build_and_run.sh`.
-
-### C++
-
-To build and install C++ library to `${CONDA_PREFIX}`, with both Python and RMM support, as well as building all tests and benchmarks (with CUDA support) run:
-
-```
-mkdir cpp/build
-cd cpp/build
-cmake .. -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} \
-      -DBUILD_TESTS=ON \
-      -DBUILD_BENCHMARKS=ON \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DUCXX_ENABLE_PYTHON=ON \
-      -DUCXX_ENABLE_RMM=ON \
-      -DUCXX_BENCHMARKS_ENABLE_CUDA=ON
-make -j install
+```bash
+conda create --name hip-ucxx python=3.12
+conda activate hip-ucxx
 ```
 
-### Python
+**Python virtual environment:**
 
-```
-cd python
-python setup.py install
-```
-
-## Running benchmarks
-
-### C++
-
-Currently there is one C++ benchmark with comprehensive options. It can be found under `cpp/build/benchmarks/ucxx_perftest` and for a full list of options `-h` argument can be used.
-
-The benchmark is composed of two processes: a server and a client. The server must not specify an IP address or hostname and will bind to all available interfaces, whereas the client must specify the IP address or hostname where the server can be reached.
-
-#### Basic Usage
-
-Below is an example of running a server first, followed by the client connecting to the server on the `localhost` (same as `127.0.0.1`). Both processes specify a list of parameters, which are the message size in bytes (`-s 1000000000`), the number of iterations to perform (`-n 10`) and the progress mode (`-P polling`).
-
-```
-$ UCX_TCP_CM_REUSEADDR=y ./benchmarks/ucxx_perftest -s 1000000000 -n 10 -P polling &
-$ ./benchmarks/ucxx_perftest -s 1000000000 -n 10 -P polling localhost
+```bash
+python3 -m venv hip-ucxx-env
+source hip-ucxx-env/bin/activate
 ```
 
-#### CUDA Memory Support
+For installing pre-built packages via AMD PyPI, see the
+[installation guide](https://rocm.docs.amd.com/projects/hip-ucxx/en/latest/install/install.html).
 
-When built with `UCXX_BENCHMARKS_ENABLE_CUDA=ON`, the benchmark supports multiple CUDA memory types using the `-m` flag:
+## Dependencies
 
-```
-# Server with CUDA device memory
-$ UCX_TCP_CM_REUSEADDR=y ./benchmarks/ucxx_perftest -m cuda -s 1048576 -n 10 &
+hip-ucxx requires UCX (≥ 1.18.0) built with ROCm support. Pre-built system
+packages typically do not include ROCm support, so building from source is
+recommended.
 
-# Client with CUDA device memory
-$ ./benchmarks/ucxx_perftest -m cuda -s 1048576 -n 10 127.0.0.1
+Install the RDMA/InfiniBand system packages first:
 
-# Server with CUDA managed memory (unified memory)
-$ UCX_TCP_CM_REUSEADDR=y ./benchmarks/ucxx_perftest -m cuda-managed -s 1048576 -n 10 &
+```bash
+# Ubuntu/Debian
+sudo apt install rdma-core libibverbs-dev librdmacm-dev libnuma-dev
 
-# Client with CUDA managed memory
-$ ./benchmarks/ucxx_perftest -m cuda-managed -s 1048576 -n 10 127.0.0.1
-
-# Server with CUDA async memory (with streams)
-$ UCX_TCP_CM_REUSEADDR=y ./benchmarks/ucxx_perftest -m cuda-async -s 1048576 -n 10 &
-
-# Client with CUDA async memory
-$ ./benchmarks/ucxx_perftest -m cuda-async -s 1048576 -n 10 127.0.0.1
+# RHEL/CentOS
+sudo yum install rdma-core-devel libibverbs-devel librdmacm-devel numactl-devel
 ```
 
-**Available Memory Types:**
-- `host` - Standard host memory allocation (default)
-- `cuda` - CUDA device memory allocation
-- `cuda-managed` - CUDA unified/managed memory allocation
-- `cuda-async` - CUDA device memory with asynchronous operations
+Then build UCX with ROCm support:
 
-**Requirements for CUDA Support:**
-- UCXX compiled with `UCXX_BENCHMARKS_ENABLE_CUDA=ON` (if building benchmarks)
-- CUDA runtime available
-- UCX configured with CUDA transport support
-- Compatible CUDA devices on both endpoints
-
-It is recommended to use `UCX_TCP_CM_REUSEADDR=y` when binding to interfaces with TCP support to prevent waiting for the process' `TIME_WAIT` state to complete, which often takes 60 seconds after the server has terminated.
-
-### Python
-
-Benchmarks are available for both the Python "core" (synchronous) API and the "high-level" (asynchronous) API.
-
-#### Synchronous
-
-```python
-# Thread progress without delayed notification NumPy transfer, 100 iterations
-# of single buffer with 100 bytes
-python -m ucxx.benchmarks.send_recv \
-    --backend ucxx-core \
-    --object_type numpy \
-    --n-iter 100 \
-    --n-bytes 100
-
-# Blocking progress without delayed notification RMM transfer between GPUs 0
-# and 3, 100 iterations of 2 buffers (using multi-buffer interface) each with
-# 1 MiB
-python -m ucxx.benchmarks.send_recv \
-    --backend ucxx-core \
-    --object_type rmm \
-    --server-dev 0 \
-    --client-dev 3 \
-    --n-iter 100 \
-    --n-bytes 100 \
-    --progress-mode blocking
+```bash
+export UCX_VERSION=1.18.0
+wget -q "https://github.com/openucx/ucx/releases/download/v${UCX_VERSION}/ucx-${UCX_VERSION}.tar.gz"
+tar xzf "ucx-${UCX_VERSION}.tar.gz"
+mkdir -p "ucx-${UCX_VERSION}/build"
+cd "ucx-${UCX_VERSION}/build"
+../contrib/configure-release \
+    --prefix=/usr \
+    --with-rocm=/opt/rocm \
+    --with-rc --with-ud --with-dm --with-rdmacm --with-verbs \
+    --enable-mt --without-go --disable-assertions
+make -j$(nproc)
+sudo make install
 ```
 
-#### Asynchronous
+[hipMM](https://github.com/AMD-AIOSS/hipMM) is highly recommended for GPU-to-GPU
+direct transfers.
 
-```python
-# NumPy transfer, 100 iterations of 8 buffers (using multi-buffer interface)
-# each with 100 bytes
-python -m ucxx.benchmarks.send_recv \
-    --backend ucxx-async \
-    --object_type numpy \
-    --n-iter 100 \
-    --n-bytes 100 \
-    --n-buffers 8
+For detailed dependency information and build options, see the
+[build guide](https://rocm.docs.amd.com/projects/hip-ucxx/en/latest/install/build.html).
 
-# RMM transfer between GPUs 0 and 3, 100 iterations of 2 buffers (using
-# multi-buffer interface) each with 1 MiB
-python -m ucxx.benchmarks.send_recv \
-    --backend ucxx-async \
-    --object_type rmm \
-    --server-dev 0 \
-    --client-dev 3 \
-    --n-iter 100 \
-    --n-bytes 1MiB \
-    --n-buffers 2
+## Building and running
 
-# Polling progress mode without delayed notification NumPy transfer,
-# 100 iterations of single buffer with 1 MiB
-UCXPY_ENABLE_DELAYED_SUBMISSION=0 \
-    python -m ucxx.benchmarks.send_recv \
-    --backend ucxx-async \
-    --object_type numpy \
-    --n-iter 100 \
-    --n-bytes 1MiB \
-    --progress-mode polling
+The `build.hip.sh` and `run.hip.sh` scripts are the primary tools for building
+and running hip-ucxx components.
+
+```bash
+# Build the C++ library
+./build.hip.sh libucxx
+
+# Build the Python module (includes libucxx)
+./build.hip.sh ucxx
+
+# Build everything
+./build.hip.sh all
+
+# Run C++ tests
+./run.hip.sh cpp_tests
+
+# Run Python tests
+./run.hip.sh py_tests
 ```
+
+Run `./build.hip.sh --help` and `./run.hip.sh --help` for the full list of
+targets and options.
+
+For advanced build options including direct CMake usage and manual wheel
+building, see the
+[build guide](https://rocm.docs.amd.com/projects/hip-ucxx/en/latest/install/build.html).
 
 ## Logging
 
-Logging is independently available for both C++ and Python APIs. Since the Python interface uses the C++ backend, C++ logging can be enabled when running Python code as well.
+Logging is independently available for both C++ and Python APIs. Since the
+Python interface uses the C++ backend, C++ logging can be enabled when running
+Python code as well.
 
 ### C++
 
-The C++ interface reuses the UCX logger and provides the same log levels and can be enabled via the `UCXX_LOG_LEVEL` environment variable. However, it will not enable UCX logging, one must still set `UCX_LOG_LEVEL` for UCX logging. A few examples are below:
+The C++ interface reuses the UCX logger and provides the same log levels. It
+can be enabled via the `UCXX_LOG_LEVEL` environment variable. This will not
+enable UCX logging; set `UCX_LOG_LEVEL` separately for that.
 
-```
+```bash
 # Request trace log level
 UCXX_LOG_LEVEL=TRACE_REQ
 
@@ -200,12 +148,20 @@ UCXX_LOG_LEVEL=DEBUG
 
 ### Python
 
-The UCXX Python interface uses the `logging` library included in Python. The only used levels currently are `INFO` and `DEBUG`, and can be enabled via the `UCXPY_LOG_LEVEL` environment variable. A few examples are below:
+The Python interface uses Python's `logging` library. The levels `INFO` and
+`DEBUG` are available and can be enabled via the `UCXPY_LOG_LEVEL` environment
+variable.
 
-```
+```bash
 # Enable Python info log level
 UCXPY_LOG_LEVEL=INFO
 
-# Enable Python debug log level, UCXX request trace log level and UCX data log level
+# Enable Python debug, UCXX request trace, and UCX data log levels together
 UCXPY_LOG_LEVEL=DEBUG UCXX_LOG_LEVEL=TRACE_REQ UCX_LOG_LEVEL=DATA
 ```
+
+## License
+
+hip-ucxx is licensed under a combination of the BSD 3-Clause License (for code
+derived from NVIDIA UCXX) and the MIT License (for AMD additions). See
+[LICENSES/](LICENSES/) for the full license texts.
