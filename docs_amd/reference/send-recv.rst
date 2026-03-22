@@ -1,5 +1,6 @@
+.. SPDX-FileCopyrightText: Copyright NVIDIA CORPORATION & AFFILIATES.
 .. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: MIT
+.. SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 Send/Recv internals
 ===================
@@ -14,14 +15,20 @@ Generally UCX creates connections between endpoints with the following steps:
 3. ``Endpoint`` communicates with the ``Listener``
 4. When finished, close ``Endpoint`` and ``Listener``
 
-Below we go into more detail as we create an echo server in UCX and compare with `Python Sockets <https://docs.python.org/3/library/socket.html#example>`_.
+Below we go into more detail as we create an echo server in UCX and compare with
+`Python Sockets <https://docs.python.org/3/library/socket.html#example>`_.
 
 Server
 ------
 
-First, we create the server -- in hip-ucxx, we create a server with ``create_listener`` and build a blocking call to keep the listener alive. The listener invokes a callback function when an incoming connection is accepted. This callback should take in an ``Endpoint`` as an argument for ``send``/``recv``.
+First, we create the server -- in hip-ucxx, we create a server with ``create_listener`` and build a
+blocking call to keep the listener alive. The listener invokes a callback function when an incoming
+connection is accepted. This callback should take in an ``Endpoint`` as an argument for
+``send``/``recv``.
 
-For Python sockets, the server is similarly constructed. ``bind`` opens a connection on a given port and ``accept`` is Python Sockets' blocking call for incoming connections. In both hip-ucxx and Sockets, once a connection has been made, both receive data and echo the same data back to the client.
+For Python sockets, the server is similarly constructed. ``bind`` opens a connection on a given port
+and ``accept`` is Python Sockets' blocking call for incoming connections. In both hip-ucxx and
+Sockets, once a connection has been made, both receive data and echo the same data back to the client.
 
 **UCX:**
 
@@ -52,12 +59,16 @@ For Python sockets, the server is similarly constructed. ``bind`` opens a connec
        conn.close()
 
 .. note::
-   In this example we create servers which listen forever. In production applications developers should also call appropriate closing functions.
+   In this example we create servers which listen forever. In production applications developers
+   should also call appropriate closing functions.
 
 Client
 ------
 
-For Sockets, on the client-side we connect to the established host/port combination and send data to the socket. The client-side is a bit more interesting in hip-ucxx: ``create_endpoint`` also uses a host/port combination to establish a connection, and after an ``Endpoint`` is created, ``hello, world`` is passed back and forth between the client and server.
+For Sockets, on the client-side we connect to the established host/port combination and send data to
+the socket. The client-side is a bit more interesting in hip-ucxx: ``create_endpoint`` also uses a
+host/port combination to establish a connection, and after an ``Endpoint`` is created,
+``hello, world`` is passed back and forth between the client and server.
 
 **UCX:**
 
@@ -81,7 +92,14 @@ For Sockets, on the client-side we connect to the established host/port combinat
 
    s.close()
 
-So what happens with ``create_endpoint``? Unlike Sockets, UCX employs a tag-matching strategy where endpoints are created with a unique id and send/receive operations also use unique ids (these are called ``tags``). With standard TCP connections, when an incoming request is made, a socket is created with a unique 4-tuple: client address, client port, server address, and server port. With this uniqueness, threads and processes alike are now free to communicate with one another. Again, UCX uses tags for uniqueness so when an incoming request is made, the receiver matches the ``Endpoint`` ID and a unique tag -- for more details on tag-matching please see `this page <https://www.kernel.org/doc/html/latest/infiniband/tag_matching.html>`_.
+So what happens with ``create_endpoint``? Unlike Sockets, UCX employs a tag-matching strategy where
+endpoints are created with a unique id and send/receive operations also use unique ids
+(these are called ``tags``). With standard TCP connections, when an incoming request is made,
+a socket is created with a unique 4-tuple: client address, client port, server address, and server
+port. With this uniqueness, threads and processes alike are now free to communicate with one another.
+Again, UCX uses tags for uniqueness so when an incoming request is made, the receiver matches the
+``Endpoint`` ID and a unique tag -- for more details on tag-matching please see
+`this page <https://www.kernel.org/doc/html/latest/infiniband/tag_matching.html>`_.
 
 ``create_endpoint`` will create an ``Endpoint`` with three steps:
 
@@ -101,7 +119,9 @@ Again, an ``Endpoint`` sends and receives with `unique tags <http://openucx.gith
            guarantee_msg_order=guarantee_msg_order,
        )
 
-Most users will not care about these details but developers and interested network enthusiasts may. Looking at the DEBUG (``UCXPY_LOG_LEVEL=DEBUG``) output of the client can help clarify what hip-ucxx and UCX is doing under the hood:
+Most users will not care about these details but developers and interested network enthusiasts may.
+Looking at the DEBUG (``UCXPY_LOG_LEVEL=DEBUG``) output of the client can help clarify what hip-ucxx
+and UCX is doing under the hood:
 
 .. code-block:: text
 
@@ -116,6 +136,12 @@ Most users will not care about these details but developers and interested netwo
    [1757536870.872404] [host:1377244] UCXPY  DEBUG [Recv #000] ep: 0x7f5a161a8080, tag: 0xdf227087928e03f6, nbytes: 8, type: <class 'array.array'>
    [1757536870.872600] [host:1377244] UCXPY  DEBUG [Recv #001] ep: 0x7f5a161a8080, tag: 0xdf227087928e03f6, nbytes: 12, type: <class 'bytearray'>
 
-We can see from the above that when the ``Endpoint`` is created, 4 tags are generated: ``msg-tag-send``, ``msg-tag-recv``, ``ctrl-tag-send``, and ``ctrl-tag-recv``. This data is transmitted to the server via a `stream <https://openucx.github.io/ucx/api/latest/html/group___u_c_p___c_o_m_m.html#gae9fe6efe6b05e4e78f58bee68c68b252>`_ communication in an `exchange peer info <https://github.com/rapidsai/ucxx/blob/branch-0.46/python/ucxx/ucxx/_lib_async/exchange_peer_info.py>`_ convenience function.
+We can see from the above that when the ``Endpoint`` is created, 4 tags are generated:
+``msg-tag-send``, ``msg-tag-recv``, ``ctrl-tag-send``, and ``ctrl-tag-recv``. This data is
+transmitted to the server via a `stream <https://openucx.github.io/ucx/api/latest/html/group___u_c_p___c_o_m_m.html#gae9fe6efe6b05e4e78f58bee68c68b252>`_
+communication in an `exchange peer info <https://github.com/rapidsai/ucxx/blob/branch-0.46/python/ucxx/ucxx/_lib_async/exchange_peer_info.py>`_
+convenience function.
 
-Next, the client sends data on the ``msg-tag-send`` tag. Two messages are sent, the size of the data ``8 bytes`` and data itself. The server receives the data and immediately echos the data back. The client then receives two messages the size of the data and the data itself.
+Next, the client sends data on the ``msg-tag-send`` tag. Two messages are sent, the size of the data
+``8 bytes`` and data itself. The server receives the data and immediately echos the data back. The
+client then receives two messages the size of the data and the data itself.

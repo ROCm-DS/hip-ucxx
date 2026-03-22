@@ -1,5 +1,6 @@
+.. SPDX-FileCopyrightText: Copyright NVIDIA CORPORATION & AFFILIATES.
 .. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: MIT
+.. SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 Monitoring transports
 =====================
@@ -9,7 +10,8 @@ Below is a list of commonly used tools and commands to monitor InfiniBand and RO
 InfiniBand
 ----------
 
-Monitor InfiniBand packet counters -- this number should dramatically increase when there's InfiniBand traffic:
+Monitor InfiniBand packet counters -- this number should dramatically increase when there's
+InfiniBand traffic:
 
 .. code-block:: bash
 
@@ -22,28 +24,28 @@ Monitor GPU topology and interconnect access:
 
 .. code-block:: bash
 
-   rocm-smi --showtopo
+   amd-smi topology
 
 Monitor GPU utilization across all GPUs:
 
 .. code-block:: bash
 
-   rocm-smi --showuse
+   amd-smi metric
 
 Monitor XGMI link information and data transfer activity:
 
 .. code-block:: bash
 
-   rocm-smi --showtoponuma
+   amd-smi topology
 
 Display GPU memory usage:
 
 .. code-block:: bash
 
-   rocm-smi --showmeminfo vram
+   amd-smi metric
 
 Continuous monitoring of GPU stats:
 
 .. code-block:: bash
 
-   watch -n 1 rocm-smi
+   watch -n 1 amd-smi

@@ -2,8 +2,8 @@
 .. SPDX-License-Identifier: MIT
 
 .. meta::
-   :description: dask-hip system requirements
-   :keywords: Dask, GPU, HIP, ROCm, ROCm-DS, AMD, requirements, compatibility
+   :description: hip-ucxx system requirements
+   :keywords: UCX, UCXX, GPU, HIP, ROCm, ROCm-DS, AMD, requirements, compatibility
 
 .. _system-requirements:
 
@@ -13,7 +13,7 @@ System requirements
 
 This page lists the system requirements for using ``hip-ucxx``.
 
-* Operating Systems: many_linux version 2.28. Ubuntu 22.04 is recommended. 
+* Operating Systems: manylinux_2_28. Ubuntu 22.04 is recommended.
 * ROCm version: 7.2.0
 * Supported AMD GPUs:
 
@@ -26,4 +26,5 @@ This page lists the system requirements for using ``hip-ucxx``.
 Conda or virtual environment
 -----------------------------
 
-A Conda installation or Python virtual environment is recommended for managing dependencies, such as `Miniforge <https://conda-forge.org/download/>`_ as a minimal Conda distribution.
+A Conda installation or Python virtual environment is recommended for managing dependencies, such as
+`Miniforge <https://conda-forge.org/download/>`_ as a minimal Conda distribution.

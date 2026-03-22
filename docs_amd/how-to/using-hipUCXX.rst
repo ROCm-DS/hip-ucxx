@@ -1,5 +1,6 @@
+.. SPDX-FileCopyrightText: Copyright NVIDIA CORPORATION & AFFILIATES.
 .. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: MIT
+.. SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 **************
 Using hip-ucxx
@@ -146,6 +147,28 @@ async API:
        print(f"Client received: {msg.decode()}")
 
    asyncio.run(main())
+
+Python basic example
+--------------------
+
+The repository includes a comprehensive low-level example at
+``python/ucxx/examples/basic.py`` that demonstrates the ``ucx_api`` interface
+directly. This example covers context/worker/listener/endpoint creation,
+tag-based transfers, and configurable progress modes.
+
+To run the example:
+
+.. code-block:: bash
+
+   python python/ucxx/examples/basic.py --progress-mode blocking
+   python python/ucxx/examples/basic.py --progress-mode thread
+   python python/ucxx/examples/basic.py --multi-buffer-transfer
+
+Key options:
+
+- ``--progress-mode`` (``thread`` or ``blocking``) -- controls how UCX progress is driven
+- ``--object-type`` (``numpy`` or ``rmm``) -- selects the buffer type for transfers
+- ``--multi-buffer-transfer`` -- enables multi-buffer transfer mode
 
 For additional Python examples, see the ``python/ucxx/ucxx/examples/`` directory
 in the repository.

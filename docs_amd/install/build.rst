@@ -1,5 +1,6 @@
+.. SPDX-FileCopyrightText: Copyright NVIDIA CORPORATION & AFFILIATES.
 .. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: MIT
+.. SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 .. _building-ucxx:
 
@@ -7,12 +8,15 @@
 Building hip-ucxx from source
 *****************************
 
-The following instructions provide steps to build and test hip-ucxx from source files provided in the https://github.com/AMD-AIOSS/hip-ucxx repository. To install ``hip-ucxx`` for end users, see :ref:`installing-ucxx`.
+The following instructions provide steps to build and test hip-ucxx from source files provided in the
+https://github.com/AMD-AIOSS/hip-ucxx repository. To install ``hip-ucxx`` for end users,
+see :ref:`installing-ucxx`.
 
 Requirements and dependencies
 =============================
 
-See :ref:`system-requirements` for information related to supported operating systems, ROCm versions, and AMD GPUs before building ``hip-ucxx``.
+See :ref:`system-requirements` for information related to supported operating systems, ROCm versions,
+and AMD GPUs before building ``hip-ucxx``.
 
 Building ``hip-ucxx`` uses the following tools and dependencies.
 
@@ -25,11 +29,13 @@ Building ``hip-ucxx`` uses the following tools and dependencies.
    * - `cmake <https://cmake.org/>`_
      - ≥ 3.26.4
    * - `UCX <https://github.com/openucx/ucx>`_
-     - ≥ 1.17.0
-   * - **Optional Dependencies**
+     - ≥ 1.18.0 (must be built with ROCm support; see :ref:`building-ucx`)
+   * - **Recommended Dependencies**
      -
    * - `hipMM (RMM) <https://github.com/AMD-AIOSS/hipMM>`_
-     - 4.0.0 (for GPU buffer support)
+     - 4.0.0 (highly recommended for GPU-to-GPU direct transfers)
+   * - **Optional Dependencies**
+     -
    * - `Googletest <https://github.com/google/googletest>`_
      - ≥ 1.13.0 (for tests)
    * - `Googlebench <https://github.com/google/benchmark>`_
@@ -37,27 +43,144 @@ Building ``hip-ucxx`` uses the following tools and dependencies.
    * - `Doxygen <https://github.com/doxygen/doxygen>`_
      - ≥ 1.8.20 (for documentation)
 
-C++ library
-===========
+.. note::
 
-The ``build.hip.sh`` script simplifies the build process. Use it to build the C++ library, tests, examples, and benchmarks.
+   ``hipMM`` provides GPU device memory management and is required for GPU buffer transfers
+   via ``UCXXPyRMMBuffer``. Without it, only host memory transfers are supported. Most users
+   working with GPU-to-GPU communication should install ``hipMM``.
+
+.. _building-ucx:
+
+Building UCX with ROCm support
+==============================
+
+``hip-ucxx`` requires UCX built with ROCm support for GPU-direct communication.
+Pre-built system packages typically do not include this support, so building from
+source is recommended.
+
+Install the required system packages for RDMA/InfiniBand support:
+
+**Ubuntu/Debian:**
 
 .. code-block:: bash
 
-   # Build the libucxx C++ library
-   ./build.hip.sh libucxx
+   sudo apt install rdma-core libibverbs-dev librdmacm-dev libnuma-dev
 
-   # Build with tests
-   ./build.hip.sh libucxx libucxx-tests
+**RHEL/CentOS:**
 
-   # Build with examples
-   ./build.hip.sh libucxx libucxx-ex
+.. code-block:: bash
 
-   # Build with benchmarks
-   ./build.hip.sh libucxx libucxx-bench
+   sudo yum install rdma-core-devel libibverbs-devel librdmacm-devel numactl-devel
 
-   # Build all C++ targets
-   ./build.hip.sh cxx-all
+Download and extract the UCX source (replace ``1.18.0`` with the desired version):
+
+.. code-block:: bash
+
+   export UCX_VERSION=1.18.0
+   wget -q "https://github.com/openucx/ucx/releases/download/v${UCX_VERSION}/ucx-${UCX_VERSION}.tar.gz"
+   tar xzf "ucx-${UCX_VERSION}.tar.gz"
+
+Configure and build:
+
+.. code-block:: bash
+
+   mkdir -p "ucx-${UCX_VERSION}/build"
+   cd "ucx-${UCX_VERSION}/build"
+   ../contrib/configure-release \
+       --prefix=/usr \
+       --with-rocm=/opt/rocm \
+       --with-rc --with-ud --with-dm --with-rdmacm --with-verbs \
+       --enable-mt --without-go --disable-assertions
+   make -j$(nproc)
+   sudo make install
+
+Key configure flags:
+
+- ``--with-rocm=/opt/rocm`` -- enables ROCm/HIP GPU support (adjust path if ROCm is installed elsewhere)
+- ``--with-verbs`` -- InfiniBand Verbs API support (requires ``libibverbs-dev`` / ``libibverbs-devel``)
+- ``--with-rdmacm`` -- RDMA Connection Manager support (requires ``librdmacm-dev`` / ``librdmacm-devel``)
+- ``--with-rc --with-ud --with-dm`` -- Reliable Connected, Unreliable Datagram, and Device Memory transports
+- ``--enable-mt`` -- multi-threading support (required for hip-ucxx)
+
+Refer to the `UCX documentation <https://openucx.readthedocs.io/>`_ for additional configure options.
+
+Build and run scripts
+=====================
+
+The ``build.hip.sh`` and ``run.hip.sh`` scripts are the primary tools for building and running
+hip-ucxx components. They handle build configuration, dependencies, and environment setup
+automatically.
+
+.. code-block:: bash
+
+   ./build.hip.sh [options] [targets]
+   ./run.hip.sh [options] [targets]
+
+Build targets
+-------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Target
+     - Description
+   * - ``clean``
+     - Remove all existing build artifacts and start from a clean state
+   * - ``all``
+     - Build all targets
+   * - **C++ targets**
+     -
+   * - ``libucxx``
+     - Build the libucxx C++ library
+   * - ``libucxx-tests``
+     - Build C++ tests (implies ``libucxx``)
+   * - ``libucxx-ex``
+     - Build C++ examples (implies ``libucxx``)
+   * - ``libucxx-bench``
+     - Build C++ benchmarks (implies ``libucxx``)
+   * - ``cxx-all``
+     - Build all C++ targets
+   * - **Python targets**
+     -
+   * - ``ucxx``
+     - Build the ucxx Python module
+   * - ``distributed_ucxx``
+     - Build the Dask Distributed backend
+   * - ``py-all``
+     - Build all Python targets
+
+Run targets
+-----------
+
+``run.hip.sh`` expects artifacts from a prior ``build.hip.sh`` invocation.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Target
+     - Description
+   * - ``cpp_tests``
+     - Run all C++ tests
+   * - ``cpp_bench``
+     - Run C++ benchmarks
+   * - ``cpp_examples``
+     - Run C++ examples
+   * - ``py_tests``
+     - Run Python core tests
+   * - ``py_async_tests``
+     - Run Python async tests
+   * - ``py_bench``
+     - Run Python core benchmarks
+   * - ``py_async_bench``
+     - Run Python async benchmarks
+
+Run ``./build.hip.sh --help`` and ``./run.hip.sh --help`` for the full list of options
+and targets.
+
+C++ library
+===========
 
 Using CMake directly
 --------------------
@@ -108,7 +231,7 @@ CMake build options:
    * - UCXX_ENABLE_RMM
      - ON, OFF
      - OFF
-     - Enable RMM support for GPU buffer transfers
+     - Enable hipMM support for GPU buffer transfers
    * - UCXX_BUILD_PYTHON_LIB
      - ON, OFF
      - OFF
@@ -116,6 +239,14 @@ CMake build options:
 
 Running C++ tests
 -----------------
+
+Using ``run.hip.sh`` (recommended):
+
+.. code-block:: bash
+
+   ./run.hip.sh cpp_tests
+
+Alternatively, run tests directly with ctest:
 
 .. code-block:: bash
 
@@ -125,7 +256,7 @@ Running C++ tests
 Python library
 ==============
 
-The ``build.hip.sh`` script simplifies the building Python packages, tests, examples, and benchmarks.
+The recommended way to build Python packages is with ``build.hip.sh``:
 
 .. code-block:: bash
 
@@ -138,42 +269,10 @@ The ``build.hip.sh`` script simplifies the building Python packages, tests, exam
    # Build all Python targets
    ./build.hip.sh py-all
 
-Build options
--------------
-
-The ``build.hip.sh`` script accepts additional options:
-
-.. code-block:: bash
-
-   ./build.hip.sh [options] [targets]
-
-.. list-table::
-   :header-rows: 1
-   :widths: 30 70
-
-   * - Option
-     - Description
-   * - ``--build-dir``
-     - Specify a build directory (default is in-source)
-   * - ``--install-prefix``
-     - Specify an install prefix for the C++ library
-   * - ``--find-libucxx``
-     - Use an existing libucxx installation for the Python build
-   * - ``--gpu-archs``
-     - GPU architectures: ``native`` (default), ``rapids``, or list
-   * - ``-j``
-     - Number of parallel build jobs
-   * - ``-v``
-     - Verbose build output
-   * - ``-g``
-     - Build with debug settings
-   * - ``-n``
-     - Skip install step
-   * - ``clean``
-     - Remove existing build artifacts
-
 Building Python wheels manually
 -------------------------------
+
+For cases where ``build.hip.sh`` is not suitable, wheels can be built directly with pip:
 
 .. code-block:: bash
 

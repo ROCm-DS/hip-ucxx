@@ -70,6 +70,10 @@ if _ucx_version < tuple(int(i) for i in __ucx_min_version__.split(".")):
 # Setup UCX-Py logger
 logger = get_ucxpy_logger()
 
+if "UCX_MEMTYPE_REG_WHOLE_ALLOC_TYPES" not in os.environ:
+    logger.info("Setting UCX_MEMTYPE_REG_WHOLE_ALLOC_TYPES=rocm")
+    os.environ["UCX_MEMTYPE_REG_WHOLE_ALLOC_TYPES"] = "rocm"
+
 if "UCX_RNDV_THRESH" not in os.environ:
     logger.info("Setting UCX_RNDV_THRESH=8192")
     os.environ["UCX_RNDV_THRESH"] = "8192"

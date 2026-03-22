@@ -1,5 +1,6 @@
+.. SPDX-FileCopyrightText: Copyright NVIDIA CORPORATION & AFFILIATES.
 .. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: MIT
+.. SPDX-License-Identifier: BSD-3-Clause AND MIT
 
 ROCm-IPC and Docker/Kubernetes
 ===============================
