@@ -5,21 +5,21 @@ root: index
 subtrees:
 - entries:
   - file: what-is-hipUCXX.rst
-    title: What is hipUCXX?
+    title: What is hip-ucxx?
 
 - caption: Installation
   entries:
   - file: install/system-requirements.rst
     title: System requirements
   - file: install/install.rst
-    title: Installing hipUCXX
+    title: Installing hip-ucxx
   - file: install/build.rst
-    title: Building hipUCXX
+    title: Building hip-ucxx
 
 - caption: How to
   entries:
   - file: how-to/using-hipUCXX.rst
-    title: Use hipUCXX
+    title: Use hip-ucxx
 
 - caption: Reference
   entries:
@@ -29,4 +29,5 @@ subtrees:
     title: Python API reference
 
 - caption: About
+  entries:
   - file: license.rst
