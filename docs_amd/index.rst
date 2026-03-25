@@ -34,18 +34,11 @@ The hip-ucxx code is open and hosted at `https://github.com/AMD-AIOSS/hip-ucxx <
   .. grid-item-card:: How to
 
     * :doc:`Use hip-ucxx <how-to/using-hipUCXX>`
-    * :doc:`Configure hip-ucxx <how-to/configuration>`
-    * :doc:`Optimization <how-to/optimizations>`
-    * :doc:`Deployment <how-to/deployment>`
 
   .. grid-item-card:: API reference
 
     * :ref:`C++ API reference <hip-ucxx-cpp>`
     * :ref:`Python API reference <hip-ucxx-python>`
-    * :doc:`Send/Receive internals <reference/send-recv>`
-    * :doc:`Operating system limits <reference/os-limits>`
-    * :doc:`Debugging UCX <reference/ucx-debug>`
-    * :doc:`Monitoring transports <reference/transport-monitoring>`
 
 To contribute to the documentation refer to `Contributing to ROCm-DS  <https://rocm.docs.amd.com/projects/rocm-ds/en/latest/contribute/contributing.html>`_.
 

@@ -255,7 +255,7 @@ Send/Recv amd-cupy arrays
    If you are passing amd-cupy arrays between GPUs and want to use
    `ROCm-IPC <https://rocm.docs.amd.com/en/latest/>`_ for GPU-to-GPU
    transfers, ensure you have correctly set ``UCX_TLS`` to include
-   ``rocm_ipc``. See the :doc:`Configuration <configuration>` page for details.
+   ``rocm_ipc``. For example: ``UCX_TLS=tcp,rocm_ipc,rocm_copy``.
 
 **Process 1 -- Server** (run in one terminal):
 
