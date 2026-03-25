@@ -300,15 +300,23 @@ INSTANTIATE_TEST_SUITE_P(EndpointErrorHandling, ListenerTest, ::testing::Values(
 TEST_P(ListenerPortTest, Port)
 {
   auto listenerContainer = createListenerContainer();
-  auto listener          = createListener(listenerContainer);
+
+  std::shared_ptr<ucxx::Listener> listener;
+  try {
+    listener = createListener(listenerContainer);
+  } catch (const ucxx::BusyError&) {
+    GTEST_SKIP() << "Port " << GetParam() << " is already in use";
+  }
+
   _worker->progress();
 
   if (GetParam() == 0)
     ASSERT_GE(listener->getPort(), 1024);
   else
-    ASSERT_EQ(listener->getPort(), 12345);
+    ASSERT_EQ(listener->getPort(), GetParam());
 }
 
-INSTANTIATE_TEST_SUITE_P(PortAssignment, ListenerPortTest, ::testing::Values(0, 12345));
+INSTANTIATE_TEST_SUITE_P(PortAssignment, ListenerPortTest,
+                         ::testing::Values(0, 12345, 15793, 28457));
 
 }  // namespace
