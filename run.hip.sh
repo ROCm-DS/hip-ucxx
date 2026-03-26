@@ -160,20 +160,15 @@ run_py_async_tests() {
   PROGRESS_MODE=$1
   ENABLE_DELAYED_SUBMISSION=$2
   ENABLE_PYTHON_FUTURE=$3
-  SKIP=$4
 
   CONFIG_NAME="Python_Async_Tests with PROGRESS_MODE=${PROGRESS_MODE} ENABLE_DELAYED_SUBMISSION=${ENABLE_DELAYED_SUBMISSION} ENABLE_PYTHON_FUTURE=${ENABLE_PYTHON_FUTURE}"
 
-  if [ "$SKIP" -ne 0 ]; then
-    echo -e "\e[31;1mSkipping unstable test: ${CONFIG_NAME}\e[0m"
-  else
-    echo -e "\e[1mRunning: ${CONFIG_NAME}\e[0m"
-    CMD="UCXPY_PROGRESS_MODE=${PROGRESS_MODE} UCXPY_ENABLE_DELAYED_SUBMISSION=${ENABLE_DELAYED_SUBMISSION} UCXPY_ENABLE_PYTHON_FUTURE=${ENABLE_PYTHON_FUTURE} pytest -vs --import-mode=append python/ucxx/ucxx/_lib_async/tests/"
-    echo "$CMD"; eval "$CMD"
-    RET=$?
+  echo -e "\e[1mRunning: ${CONFIG_NAME}\e[0m"
+  CMD="UCXPY_PROGRESS_MODE=${PROGRESS_MODE} UCXPY_ENABLE_DELAYED_SUBMISSION=${ENABLE_DELAYED_SUBMISSION} UCXPY_ENABLE_PYTHON_FUTURE=${ENABLE_PYTHON_FUTURE} pytest -vs --import-mode=append python/ucxx/ucxx/_lib_async/tests/"
+  echo "$CMD"; eval "$CMD"
+  RET=$?
 
-    SUMMARY_RESULTS+=("${CONFIG_NAME}.........$([ $RET -eq 0 ] && echo Success || echo "Error Code: $RET")")
-  fi
+  SUMMARY_RESULTS+=("${CONFIG_NAME}.........$([ $RET -eq 0 ] && echo Success || echo "Error Code: $RET")")
 }
 
 run_py_benchmark() {
@@ -246,20 +241,19 @@ if hasTarget py_tests; then
   run_py_tests ${ARGS}
 fi
 
+# NOTE: Delayed Submission and Python future are only supported with thread-polling and thread progress modes
 if hasTarget py_async_tests; then
-  # run_py_async_tests PROGRESS_MODE   ENABLE_DELAYED_SUBMISSION ENABLE_PYTHON_FUTURE SKIP
-  run_py_async_tests   polling         0                         0                    0
-  run_py_async_tests   polling         0                         1                    0
-  run_py_async_tests   polling         1                         0                    1    # Delayed submission can't be used with polling
-  run_py_async_tests   polling         1                         1                    1    # Delayed submission can't be used with polling
-  run_py_async_tests   thread-polling  0                         0                    0
-  run_py_async_tests   thread-polling  0                         1                    0
-  run_py_async_tests   thread-polling  1                         0                    0
-  run_py_async_tests   thread-polling  1                         1                    0
-  run_py_async_tests   thread          0                         0                    0
-  run_py_async_tests   thread          0                         1                    0
-  run_py_async_tests   thread          1                         0                    0
-  run_py_async_tests   thread          1                         1                    0
+  # run_py_async_tests PROGRESS_MODE   ENABLE_DELAYED_SUBMISSION ENABLE_PYTHON_FUTURE
+  run_py_async_tests   polling         0                         0
+  run_py_async_tests   blocking        0                         0
+  run_py_async_tests   thread-polling  0                         0
+  run_py_async_tests   thread-polling  0                         1
+  run_py_async_tests   thread-polling  1                         0
+  run_py_async_tests   thread-polling  1                         1
+  run_py_async_tests   thread          0                         0
+  run_py_async_tests   thread          0                         1
+  run_py_async_tests   thread          1                         0
+  run_py_async_tests   thread          1                         1
 fi
 
 if hasTarget py_bench; then
@@ -277,9 +271,6 @@ if hasTarget py_async_bench; then
     # run_py_benchmark    BACKEND     PROGRESS_MODE   ASYNCIO_WAIT  ENABLE_DELAYED_SUBMISSION ENABLE_PYTHON_FUTURE NBUFFERS SLOW
     run_py_benchmark      ucxx-async  polling         0             0                         0                    ${nbuf}  0
     run_py_benchmark      ucxx-async  polling         0             0                         1                    ${nbuf}  0
-    # Delayed submission can't be used with polling
-    #run_py_benchmark     ucxx-async  polling         0             1                         0                    ${nbuf}  0
-    #run_py_benchmark     ucxx-async  polling         0             1                         1                    ${nbuf}  0
     run_py_benchmark      ucxx-async  thread-polling  0             0                         0                    ${nbuf}  0
     run_py_benchmark      ucxx-async  thread-polling  0             0                         1                    ${nbuf}  0
     run_py_benchmark      ucxx-async  thread-polling  0             1                         0                    ${nbuf}  0
