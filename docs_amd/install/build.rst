@@ -1,6 +1,6 @@
-.. SPDX-FileCopyrightText: Copyright NVIDIA CORPORATION & AFFILIATES.
-.. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: BSD-3-Clause AND MIT
+.. meta::
+  :description: hip-ucxx documentation and API reference library
+  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP
 
 .. _building-ucxx:
 
@@ -9,20 +9,20 @@ Building hip-ucxx from source
 *****************************
 
 The following instructions provide steps to build and test hip-ucxx from source files provided in the
-https://github.com/AMD-AIOSS/hip-ucxx repository. To install ``hip-ucxx`` for end users,
+https://github.com/AMD-AIOSS/hip-ucxx repository. To install hip-ucxx for end users,
 see :ref:`installing-ucxx`.
 
 Requirements and dependencies
 =============================
 
 See :ref:`system-requirements` for information related to supported operating systems, ROCm versions,
-and AMD GPUs before building ``hip-ucxx``.
+and AMD GPUs before building hip-ucxx.
 
-Building ``hip-ucxx`` uses the following tools and dependencies.
+Building hip-ucxx uses the following tools and dependencies.
 
 .. list-table::
    :header-rows: 1
-   :widths: 60 40
+   :widths: 40 60
 
    * - Name
      - Version / Notes
@@ -54,8 +54,8 @@ Building ``hip-ucxx`` uses the following tools and dependencies.
 Building UCX with ROCm support
 ==============================
 
-``hip-ucxx`` requires UCX built with ROCm support for GPU-direct communication.
-Pre-built system packages typically do not include this support, so building from
+hip-ucxx requires UCX built with ROCm support for GPU-direct communication.
+Prebuilt system packages typically do not include this support, so building from
 source is recommended.
 
 Install the required system packages for RDMA/InfiniBand support:
@@ -102,7 +102,7 @@ Key configure flags:
 - ``--with-rc --with-ud --with-dm`` -- Reliable Connected, Unreliable Datagram, and Device Memory transports
 - ``--enable-mt`` -- multi-threading support (required for hip-ucxx)
 
-Refer to the `UCX documentation <https://openucx.readthedocs.io/>`_ for additional configure options.
+See `UCX documentation <https://openucx.readthedocs.io/>`_ for additional configuration options.
 
 Build and run scripts
 =====================
@@ -121,7 +121,7 @@ Build targets
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 75
+   :widths: 20 80
 
    * - Target
      - Description

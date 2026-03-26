@@ -1,6 +1,3 @@
-.. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: MIT
-
 .. meta::
    :description: hip-ucxx documentation and API reference library
    :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP
@@ -11,26 +8,26 @@
 Installing hip-ucxx
 *******************
 
-You can install ``hip-ucxx`` via AMD PyPI as described below. This is recommended for users of the
-code. For developers interested in modifying or contributing to the Open Source ``hip-ucxx``
+You can install hip-ucxx via AMD PyPI as described below. This is recommended for users of the
+code. For developers interested in modifying or contributing to the Open Source hip-ucxx
 component, see the :ref:`building-ucxx`.
 
 Requirements
 ============
 
 See :ref:`system-requirements` for information related to supported operating systems, ROCm versions,
-and AMD GPUs before installing ``hip-ucxx``.
+and AMD GPUs before installing hip-ucxx.
 
-``hip-ucxx`` also requires a working installation of `UCX <https://www.openucx.org/>`_
+hip-ucxx also requires a working installation of `UCX <https://www.openucx.org/>`_
 (version 1.18.0 or later) built with ROCm support. See :ref:`building-ucx` for
 instructions on building UCX from source with the required configuration.
 
 Install hip-ucxx via AMD PyPI
 ============================
 
-Packaged versions of ``hip-ucxx`` and its dependencies are distributed via
+Packaged versions of hip-ucxx and its dependencies are distributed via
 `AMD PyPI <https://pypi.amd.com/simple>`_. This section discusses how to install
-``hip-ucxx`` via this package index.
+hip-ucxx via this package index.
 
 Set up a Python environment
 ---------------------------
@@ -56,13 +53,13 @@ Create and activate a virtual environment:
 Install packages
 ----------------
 
-With your environment activated, install ``hip-ucxx`` using pip and the AMD PyPI URL:
+With your environment activated, install hip-ucxx using pip and the AMD PyPI URL:
 
 .. code-block:: bash
 
    pip install amd-hipucxx==0.1.0 --extra-index-url=https://pypi.amd.com/simple
 
-This will also install the ``amd-libhipucxx`` dependency which provides the underlying C++ shared
+This will also install the ``amd-libhipucxx`` dependency, which provides the underlying C++ shared
 library.
 
 To also install the Dask Distributed backend:

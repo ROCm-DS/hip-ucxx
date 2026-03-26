@@ -1,5 +1,8 @@
-.. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: MIT
+.. meta::
+  :description: hip-ucxx documentation and API reference library
+  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP
+
+.. _whatis-ucxx:
 
 *****************
 What is hip-ucxx?
@@ -9,25 +12,25 @@ UCXX is a C++ wrapper library around `UCX <https://www.openucx.org/>`_ (Unified 
 providing a modern object-oriented API for high-performance inter-process and inter-node
 communication. UCX itself is a low-level C library for point-to-point networking that supports a
 wide range of transports (InfiniBand, RoCE, shared memory, TCP, and more). UCXX adds C++
-abstractions on top of the UCX C library making it significantly easier to build
+abstractions on top of the UCX C library, making it significantly easier to build
 communication-intensive applications.
 
-``hip-ucxx`` is part of the AMD ROCm Data Science toolkit (ROCm-DS) and serves as the communication
-layer for distributed GPU workloads in the ROCm-DS ecosystem. ``hip-ucxx`` is AMD's ROCm-native port
+hip-ucxx is part of the AMD ROCm Data Science toolkit (ROCm-DS) and serves as the communication
+layer for distributed GPU workloads in the ROCm-DS ecosystem. hip-ucxx is the AMD ROCm-native port
 of the `NVIDIA RAPIDS UCXX <https://github.com/rapidsai/ucxx>`_ project. It has been adapted for the
-HIP/ROCm stack while preserving the directory structure, file naming, and API naming to minimize
+ROCm/HIP stack while preserving the directory structure, file naming, and API naming to minimize
 porting friction for developers working with both NVIDIA and AMD platforms.
 
-Key highlights in ``hip-ucxx`` v0.1.0 include:
+Key highlights in hip-ucxx v0.1.0 include:
 
-* Full integration with the ROCm-DS ecosystem. ``hip-ucxx`` serves as the communication layer for
+* Full integration with the ROCm-DS ecosystem. hip-ucxx serves as the communication layer for
   distributed GPU computing across ROCm-DS components.
 * Multiple transport methods:
 
-  - *Tag matching*: Tagged send/receive for message-based communication with sender-receiver coordination.
-  - *Stream*: Ordered byte-stream communication over an endpoint.
-  - *Active messages (AM)*: Enables execution of user-defined callbacks on the receiver side upon message arrival.
-  - *Remote memory access (RMA/RDMA)*: Direct memory read/write operations across processes without involving the remote CPU.
+  - **Tag matching**: Tagged send/receive for message-based communication with sender-receiver coordination.
+  - **Stream**: Ordered byte-stream communication over an endpoint.
+  - **Active messages (AM)**: Enables execution of user-defined callbacks on the receiver side upon message arrival.
+  - **Remote memory access (RMA/RDMA)**: Direct memory read/write operations across processes without involving the remote CPU.
 
 * GPU-direct communication enables GPU-to-GPU direct data transfers without staging through host memory,
   reducing latency and increasing throughput.
@@ -38,7 +41,7 @@ Key highlights in ``hip-ucxx`` v0.1.0 include:
 Modules
 -------
 
-The following table summarizes the C++ modules available in ``hip-ucxx``:
+The following table summarizes the C++ modules available in hip-ucxx:
 
 .. list-table::
    :header-rows: 1

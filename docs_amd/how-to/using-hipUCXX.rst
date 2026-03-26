@@ -1,20 +1,24 @@
-.. SPDX-FileCopyrightText: Copyright NVIDIA CORPORATION & AFFILIATES.
-.. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: BSD-3-Clause AND MIT
+.. meta::
+  :description: hip-ucxx documentation and API reference library
+  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP
+
+.. _using-ucxx:
 
 **************
 Using hip-ucxx
 **************
 
-Example code demonstrating the use of the ``hip-ucxx`` library is provided in the repository, and in
+Example code demonstrating the use of the hip-ucxx library is provided in the repository, and in
 the following text. Both C++ and Python examples are available. These examples can be used as
-templates for building your own application using ``hip-ucxx``, or to add it to existing projects.
+Example code demonstrating the use of the hip-ucxx library is provided in the repository and in
+the following text. Both C++ and Python examples are available. These examples can be used as
+templates for building your own application with hip-ucxx, or for adding it to existing projects.
 
 C++ examples
 ============
 
 The C++ examples are located in `cpp/examples <https://github.com/AMD-AIOSS/hip-ucxx/blob/amd-integration/cpp/examples>`_.
-Refer to the :ref:`building-ucxx` for instructions on setting up your developer environment.
+See :ref:`building-ucxx` for instructions on setting up your developer environment.
 
 To build the C++ examples, use the provided ``build.hip.sh`` script:
 
@@ -25,7 +29,7 @@ To build the C++ examples, use the provided ``build.hip.sh`` script:
 Basic client/server example
 ---------------------------
 
-The ``basic`` example demonstrates the core ``hip-ucxx`` workflow: creating a context,
+The ``basic`` example demonstrates the core hip-ucxx workflow: creating a context,
 worker, listener, and endpoint, then performing tag-based send/receive operations.
 This example runs both a server and a client within the same process.
 
@@ -80,7 +84,7 @@ Tag-based communication uses ``tagSend()`` and ``tagRecv()``:
 Linking against hip-ucxx in CMake
 --------------------------------
 
-To use ``hip-ucxx`` in your own CMake project:
+To use hip-ucxx in your own CMake project:
 
 .. code-block:: cmake
 
@@ -178,6 +182,8 @@ Multi-process server/client example
 
 The examples above run server and client within the same process. The
 following demonstrates a more realistic multi-process pattern where server
+The examples above run the server and client within the same process. The
+following demonstrates a more realistic multi-process pattern where the server
 and client run in separate terminals.
 
 Send/Recv NumPy arrays

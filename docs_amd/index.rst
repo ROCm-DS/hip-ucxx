@@ -1,6 +1,3 @@
-.. SPDX-FileCopyrightText: Copyright (c) 2026 Advanced Micro Devices, Inc.
-.. SPDX-License-Identifier: MIT
-
 .. meta::
   :description: hip-ucxx documentation and API reference library
   :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP
@@ -16,9 +13,9 @@ providing a modern object-oriented API for high-performance inter-process and in
 on AMD GPUs. It is part of the AMD ROCm Data Science toolkit (ROCm-DS), an open-source software
 collection for high-performance data science applications.
 Forked from the NVIDIA® RAPIDS® UCXX project, hip-ucxx brings the same communication capabilities
-to the :doc:`HIP <hip:index>`/:doc:`ROCm <rocm:index>` stack. It offers both a modern C++ interface
+to the :doc:`ROCm <rocm:index>`/:doc:`HIP <hip:index>` stack. It offers both a modern C++ interface
 for systems developers and Python bindings with full async support for rapid prototyping and
-distributed computing workflows. For more information, see :doc:`What is hipUCXX? <what-is-hipUCXX>`
+distributed computing workflows. For more information, see :doc:`What is hip-ucxx? <what-is-hipUCXX>`
 
 The hip-ucxx code is open and hosted at `https://github.com/AMD-AIOSS/hip-ucxx <https://github.com/AMD-AIOSS/hip-ucxx>`_.
 
