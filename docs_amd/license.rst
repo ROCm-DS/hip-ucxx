@@ -23,7 +23,7 @@
 License
 =======
 
-The dask-hip project is derived from the dask-cuda
+The hip-ucxx project is derived from the ucxx
 project which is licensed under the Apache License, Version 2.0.
 
 .. literalinclude:: ../LICENSE
