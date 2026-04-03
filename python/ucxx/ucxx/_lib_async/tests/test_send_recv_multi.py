@@ -80,6 +80,10 @@ async def test_send_recv_cupy(size, multi_size, dtype):
 
     listener = ucxx.create_listener(make_echo_server())
     client = await ucxx.create_endpoint(ucxx.get_address(), listener.port)
+
+    # explicit sync is required before send to ensure data is ready
+    cupy.cuda.get_current_stream().synchronize()
+
     await client.send_multi(send_msg)
     recv_msg = await client.recv_multi()
     for r, s in zip(recv_msg, send_msg):
