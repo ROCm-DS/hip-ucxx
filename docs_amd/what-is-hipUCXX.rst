@@ -17,9 +17,9 @@ communication-intensive applications.
 
 hip-ucxx is part of the AMD ROCm Data Science toolkit (ROCm-DS) and serves as the communication
 layer for distributed GPU workloads in the ROCm-DS ecosystem. hip-ucxx is the AMD ROCm-native port
-of the `NVIDIA RAPIDS UCXX <https://github.com/rapidsai/ucxx>`_ project. It has been adapted for the
+of the RAPIDS UCXX project. It has been adapted for the
 ROCm/HIP stack while preserving the directory structure, file naming, and API naming to minimize
-porting friction for developers working with both NVIDIA and AMD platforms.
+porting friction for developers working with both CUDA and ROCm/HIP platforms.
 
 Key highlights in hip-ucxx v0.1.0 include:
 
