@@ -70,4 +70,4 @@ To also install the Dask Distributed backend:
 
 .. code-block:: bash
 
-   pip install amd-distributed-hipucxx==0.1.0 --extra-index-url=https://pypi.amd.com/simple
+   pip install amd-distributed-hipucxx==0.1.0 --extra-index-url=https://pypi.amd.com/rocm-7.2.1/simple/
