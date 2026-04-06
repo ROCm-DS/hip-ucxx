@@ -57,7 +57,11 @@ With your environment activated, install hip-ucxx using pip and the AMD PyPI URL
 
 .. code-block:: bash
 
-   pip install amd-hipucxx==0.1.0 --extra-index-url=https://pypi.amd.com/simple
+   pip install amd-hipucxx==0.1.0 --extra-index-url=https://pypi.amd.com/rocm-7.2.1/simple/
+
+.. note::
+
+   For ROCm 7.2.0 use https://pypi.amd.com/rocm-7.2.0/simple/
 
 This will also install the ``amd-libhipucxx`` dependency, which provides the underlying C++ shared
 library.
