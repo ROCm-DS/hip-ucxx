@@ -24,7 +24,7 @@ License
 =======
 
 The hip-ucxx project is derived from the ucxx
-project which is licensed under the Apache License, Version 2.0.
+project which is licensed under the BSD 3-Clause License.
 
 .. literalinclude:: ../LICENSE
    :language: plain
