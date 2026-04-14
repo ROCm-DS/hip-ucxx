@@ -34,7 +34,7 @@ Set up a Python environment
 
 **Option A: Conda**
 
-Create and activate a Conda environment with Python 3.12:
+Create and activate a Conda environment with the Python version (shown using 3.12 in the following):
 
 .. code-block:: bash
 

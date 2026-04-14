@@ -12,7 +12,7 @@ hip-ucxx is a C++ wrapper library around `UCX <https://www.openucx.org/>`_ (Unif
 providing a modern object-oriented API for high-performance inter-process and inter-node communication
 on AMD GPUs. It is part of the AMD ROCm Data Science toolkit (ROCm-DS), an open-source software
 collection for high-performance data science applications.
-Forked from the NVIDIA® RAPIDS® UCXX project, hip-ucxx brings the same communication capabilities
+Forked from the RAPIDS® UCXX project, hip-ucxx brings the same communication capabilities
 to the :doc:`ROCm <rocm:index>`/:doc:`HIP <hip:index>` stack. It offers both a modern C++ interface
 for systems developers and Python bindings with full async support for rapid prototyping and
 distributed computing workflows. For more information, see :doc:`What is hip-ucxx? <what-is-hipUCXX>`

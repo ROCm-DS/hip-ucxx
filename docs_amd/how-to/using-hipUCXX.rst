@@ -10,8 +10,6 @@ Using hip-ucxx
 
 Example code demonstrating the use of the hip-ucxx library is provided in the repository, and in
 the following text. Both C++ and Python examples are available. These examples can be used as
-Example code demonstrating the use of the hip-ucxx library is provided in the repository and in
-the following text. Both C++ and Python examples are available. These examples can be used as
 templates for building your own application with hip-ucxx, or for adding it to existing projects.
 
 C++ examples
@@ -186,8 +184,8 @@ The examples above run the server and client within the same process. The
 following demonstrates a more realistic multi-process pattern where the server
 and client run in separate terminals.
 
-Send/Recv NumPy arrays
-----------------------
+Send/Receive NumPy arrays
+-------------------------
 
 **Process 1 -- Server** (run in one terminal):
 
