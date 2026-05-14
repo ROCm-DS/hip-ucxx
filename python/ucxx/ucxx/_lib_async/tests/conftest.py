@@ -67,7 +67,11 @@ def ucxx_setup_teardown():
     ucxx.reset()
     # Let's make sure that UCX gets time to cancel
     # progress tasks before closing the event loop.
-    loop = asyncio.get_event_loop()
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        # pytest-asyncio may already have torn down the thread's loop.
+        return
     if loop.is_running():
         # If loop is running, we can't run_until_complete
         # The cleanup will happen when the loop is closed
