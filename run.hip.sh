@@ -137,6 +137,15 @@ run_cpp_example() {
 
   echo -e "\e[1mRunning: ${CONFIG_NAME}\e[0m"
   CMD="${BINARY_PATH}/examples/ucxx_example_basic -P ${PROGRESS_MODE} -s ${SEND_BUFFER_TYPE} -r ${RECV_BUFFER_TYPE}"
+
+  # WORKAROUND (UCX 1.18.x, TCP on some certain hosts): ucxx_example_basic with
+  # -s host -r rmm can SIGSEGV in ucp_proto_rndv_rtr_handle_atp when UCX picks
+  # TCP rendezvous for host→device tag recv. Force eager/multi-frag for this case only.
+  # Remove when tag paths pass explicit memory types (or UCX fixes the rndv pipeline).
+  if [ "${SEND_BUFFER_TYPE}" = "host" ] && [ "${RECV_BUFFER_TYPE}" = "rmm" ]; then
+    CMD="UCX_RNDV_THRESH=inf ${CMD}"
+  fi
+
   echo "$CMD"; eval "$CMD"
   RET=$?
 
