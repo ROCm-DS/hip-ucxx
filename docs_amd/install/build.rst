@@ -9,7 +9,7 @@ Building hip-ucxx from source
 *****************************
 
 The following instructions provide steps to build and test hip-ucxx from source files provided in the
-https://github.com/AMD-AIOSS/hip-ucxx repository. To install hip-ucxx for end users,
+https://github.com/ROCm-DS/hip-ucxx repository. To install hip-ucxx for end users,
 see :ref:`installing-ucxx`.
 
 Requirements and dependencies
@@ -30,7 +30,7 @@ Building hip-ucxx uses the following tools and dependencies.
      - ≥ 3.26.4
    * - `UCX <https://github.com/openucx/ucx>`_
      - ≥ 1.18.0 (must be built with ROCm support; see :ref:`building-ucx`)
-   * - `hipMM (RMM) <https://github.com/AMD-AIOSS/hipMM>`_
+   * - `hipMM (RMM) <https://github.com/ROCm-DS/hipMM>`_
      - 4.0.0 (required for GPU-to-GPU direct transfers)
    * - **Optional Dependencies**
      -

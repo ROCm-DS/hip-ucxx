@@ -91,7 +91,7 @@ make -j$(nproc)
 sudo make install
 ```
 
-[hipMM](https://github.com/AMD-AIOSS/hipMM) is highly recommended for GPU-to-GPU
+[hipMM](https://github.com/ROCm-DS/hipMM) is highly recommended for GPU-to-GPU
 direct transfers.
 
 For detailed dependency information and build options, see the
