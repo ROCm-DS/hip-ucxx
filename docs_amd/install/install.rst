@@ -34,11 +34,11 @@ Set up a Python environment
 
 **Option A: Conda**
 
-Create and activate a Conda environment with the Python version (shown using 3.12 in the following):
+Create and activate a Conda environment with a compatible Python version, such as 3.11 or 3.12 as shown below. For more information on compatible Python versions, see :ref:`system-requirements`.
 
 .. code-block:: bash
 
-   conda create --name hip-ucxx python=3.12
+   conda create --name hip-ucxx python=3.12 # Specify your Python version
    conda activate hip-ucxx
 
 **Option B: Python virtual environment**

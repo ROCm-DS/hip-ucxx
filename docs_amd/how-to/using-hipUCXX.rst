@@ -178,8 +178,6 @@ in the repository.
 Multi-process server/client example
 -----------------------------------
 
-The examples above run server and client within the same process. The
-following demonstrates a more realistic multi-process pattern where server
 The examples above run the server and client within the same process. The
 following demonstrates a more realistic multi-process pattern where the server
 and client run in separate terminals.
