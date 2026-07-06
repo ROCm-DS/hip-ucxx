@@ -26,7 +26,7 @@ Install hip-ucxx via AMD PyPI
 ============================
 
 Packaged versions of hip-ucxx and its dependencies are distributed via
-`AMD PyPI <https://pypi.amd.com/simple>`_. This section discusses how to install
+`AMD PyPI <https://pypi.amd.com/rocm-7.2.3/simple/>`_. This section discusses how to install
 hip-ucxx via this package index.
 
 Set up a Python environment
