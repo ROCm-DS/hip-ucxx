@@ -1,0 +1,8 @@
+--extra-index-url https://pypi.amd.com/rocm-7.2.3/simple/
+
+# build systems
+scikit-build-core[pyproject]>=0.10.0
+cython>=3.0.0
+setuptools>=64.0.0
+
+amd-hipmm==4.0.*        # required by ucxx

@@ -15,7 +15,7 @@
 # SPDX-License-Identifier: Apache-2.0 AND MIT
 # =============================================================================
 
-cmake_minimum_required(VERSION 3.26.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.30.4 FATAL_ERROR)
 
 file(READ "${CMAKE_CURRENT_LIST_DIR}/../../VERSION" _version_contents)
 if(_version_contents MATCHES "^([0-9]+)\\.([0-9]+)\\.([0-9]+).*$")
@@ -28,11 +28,6 @@ else()
   )
 endif()
 
-include(../../cmake/rapids_config.cmake)
-include(rapids-cpm)
-include(rapids-cuda)
-rapids_cuda_init_architectures(libucxx-python)
-rapids_cpm_init()
 
 project(
   libucxx-python

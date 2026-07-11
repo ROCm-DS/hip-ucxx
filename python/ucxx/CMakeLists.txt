@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD 3-Clause License
 # =================================================================================
 
-cmake_minimum_required(VERSION 3.26.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.30.4 FATAL_ERROR)
 
 file(READ "${CMAKE_CURRENT_LIST_DIR}/../../VERSION" _version_contents)
 if(_version_contents MATCHES "^([0-9]+)\\.([0-9]+)\\.([0-9]+).*$")
@@ -15,8 +15,6 @@ else()
       "Could not determine ucxx version. Contents of VERSION file:\n  ${_version_contents_formatted}"
   )
 endif()
-
-include(../../cmake/rapids_config.cmake)
 
 project(
   ucxx-python
@@ -36,8 +34,6 @@ else()
   set(ucxx-python_FOUND OFF)
 endif()
 
-include(rapids-cython-core)
-
 if(NOT ucxx-python_FOUND)
   set(BUILD_TESTS OFF)
   set(BUILD_BENCHMARKS OFF)
@@ -47,6 +43,8 @@ if(NOT ucxx-python_FOUND)
   add_subdirectory(../../cpp/python ucxx-python ${_exclude_from_all})
 endif()
 
+include(../../cmake/rapids_config.cmake)
+include(rapids-cython-core)
 rapids_cython_init()
 
 find_package(Python3 REQUIRED COMPONENTS Development.Module)
