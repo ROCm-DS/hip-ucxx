@@ -81,6 +81,7 @@ NOTE: Corresponding command line options will override these.
     UCXX_INSTALL_PREFIX    - for --install-prefix
     UCXX_FIND_LIBUCXX      - for --find-libucxx
     UCXX_BUILD_TYPE        - specify a CMake build type
+    UCXX_HIP_COMPILER      - specify the HIP compiler (default is 'hipcc')
     UCXX_HIP_ARCHITECTURES - specify the gpu archs (--gpu-archs),
                              overrides RAPIDS_CMAKE_HIP_ARCHITECTURES
 EOF
@@ -112,6 +113,7 @@ FIND_LIBUCXX=${UCXX_FIND_LIBUCXX:=0}
 BUILD_TYPE=${UCXX_BUILD_TYPE:="Release"}
 GPU_ARCHS=${UCXX_HIP_ARCHITECTURES:=${RAPIDS_CMAKE_HIP_ARCHITECTURES:="NATIVE"}}
 PARALLEL_LEVEL=${PARALLEL_LEVEL:=$(nproc)}
+HIP_COMPILER=${UCXX_HIP_COMPILER:-"hipcc"}
 
 # process the flags and arguments
 TARGETS=()
@@ -294,6 +296,8 @@ if hasTarget libucxx; then
     cmake -S "${REPODIR}/cpp" -B "${LIBUCXX_BUILD_DIR}" \
           "${GENERATOR_ARG}" \
           "${INSTALL_PREFIX_ARG}" \
+          -DCMAKE_C_COMPILER="${HIP_COMPILER}" \
+          -DCMAKE_CXX_COMPILER="${HIP_COMPILER}" \
           -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
           -DBUILD_TESTS=${BUILD_TESTS} \
           -DBUILD_EXAMPLES=${BUILD_EXAMPLES} \
@@ -318,7 +322,9 @@ fi
 if hasTarget libucxx_py; then
     pushd "${REPODIR}/python/libucxx"
 
-    CONFIG_SETTINGS=("skbuild.cmake.define.UCXX_ENABLE_RMM=ON")
+    CONFIG_SETTINGS=("skbuild.cmake.define.CMAKE_C_COMPILER=${HIP_COMPILER}")
+    CONFIG_SETTINGS+=("skbuild.cmake.define.CMAKE_CXX_COMPILER=${HIP_COMPILER}")
+    CONFIG_SETTINGS+=("skbuild.cmake.define.UCXX_ENABLE_RMM=ON")
     CONFIG_SETTINGS+=("skbuild.cmake.define.CMAKE_BUILD_TYPE=${BUILD_TYPE}")
     if [[ -n ${LIBUCXX_PY_BUILD_DIR} ]]; then
         CONFIG_SETTINGS+=("skbuild.build-dir=${LIBUCXX_PY_BUILD_DIR}/${WHEEL_TAG}")
@@ -350,7 +356,9 @@ getCMakeInstallPrefix() {
 if hasTarget ucxx; then
     pushd "${REPODIR}/python/ucxx"
 
-    CONFIG_SETTINGS=("skbuild.cmake.define.UCXX_ENABLE_RMM=ON")
+    CONFIG_SETTINGS=("skbuild.cmake.define.CMAKE_C_COMPILER=${HIP_COMPILER}")
+    CONFIG_SETTINGS+=("skbuild.cmake.define.CMAKE_CXX_COMPILER=${HIP_COMPILER}")
+    CONFIG_SETTINGS+=("skbuild.cmake.define.UCXX_ENABLE_RMM=ON")
     CONFIG_SETTINGS+=("skbuild.cmake.define.CMAKE_BUILD_TYPE=${BUILD_TYPE}")
     if (( FIND_LIBUCXX )); then
         CONFIG_SETTINGS+=("skbuild.cmake.define.FIND_UCXX_CPP=ON")

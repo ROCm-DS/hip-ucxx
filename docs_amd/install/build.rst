@@ -27,7 +27,7 @@ Building hip-ucxx uses the following tools and dependencies.
    * - Name
      - Version / Notes
    * - `cmake <https://cmake.org/>`_
-     - ≥ 3.26.4
+     - ≥ 3.30.4
    * - `UCX <https://github.com/openucx/ucx>`_
      - ≥ 1.18.0 (must be built with ROCm support; see :ref:`building-ucx`)
    * - `hipMM (RMM) <https://github.com/ROCm-DS/hipMM>`_
@@ -46,6 +46,18 @@ Building hip-ucxx uses the following tools and dependencies.
    ``hipMM`` provides GPU device memory management and is required for GPU buffer transfers
    via ``UCXXPyRMMBuffer``. Without it, only host memory transfers are supported. Most users
    working with GPU-to-GPU communication should install ``hipMM``.
+
+Before building, set up the ROCm development environment so CMake can locate ROCm
+libraries and headers. Export the following variables in the same shell session used
+for ``./build.hip.sh`` or direct CMake invocations:
+
+.. code-block:: bash
+
+   export ROCM_PATH=/opt/rocm          # adjust if ROCm is installed elsewhere
+   export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:${ROCM_PATH}
+
+``/opt/rocm`` is the default ROCm install location. ``CMAKE_PREFIX_PATH`` is appended
+to any existing value so previously configured prefixes are preserved.
 
 .. _building-ucx:
 
@@ -253,6 +265,17 @@ Alternatively, run tests directly with ctest:
 
 Python library
 ==============
+
+Python environment and dependencies
+-----------------------------------
+
+Before building Python targets, activate a Conda or Python virtual environment
+(see :ref:`installing-ucxx` for environment setup). Install the build-time Python
+dependencies listed in ``python/requirements.txt``:
+
+.. code-block:: bash
+
+   pip install -r python/requirements.txt
 
 The recommended way to build Python packages is with ``build.hip.sh``:
 
