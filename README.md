@@ -4,7 +4,7 @@ hip-ucxx is an object-oriented C++ interface for [UCX](https://www.openucx.org/)
 with native Python bindings, designed for GPU-direct communication on AMD GPUs
 using HIP/ROCm. It is derived from the
 [UCXX](https://github.com/rapidsai/ucxx) project by NVIDIA Corporation
-and is part of the [ROCm-DS](https://github.com/ROCm-DS) ecosystem.
+and is part of the [AMD Data Science](https://github.com/AMD-Ecosystem/ROCm-DS) ecosystem.
 
 hip-ucxx supports multiple transport methods including tag matching, active
 messages, and stream-based communication over InfiniBand, ROCm-IPC/XGMI, shared
@@ -91,7 +91,7 @@ make -j$(nproc)
 sudo make install
 ```
 
-[hipMM](https://github.com/ROCm-DS/hipMM) is highly recommended for GPU-to-GPU
+[hipMM](https://github.com/AMD-Ecosystem/hipMM) is highly recommended for GPU-to-GPU
 direct transfers.
 
 For detailed dependency information and build options, see the

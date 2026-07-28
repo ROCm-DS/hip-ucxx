@@ -1,6 +1,6 @@
 .. meta::
    :description: hip-ucxx system requirements
-   :keywords: UCX, UCXX, GPU, HIP, ROCm, ROCm-DS, AMD, requirements, compatibility
+   :keywords: UCX, UCXX, GPU, HIP, ROCm, AMD Data Science, requirements, compatibility
 
 .. _system-requirements:
 

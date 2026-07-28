@@ -1,6 +1,6 @@
 .. meta::
   :description: hip-ucxx documentation and API reference library
-  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP, Python
+  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, AMD Data Science, HIP, Python
 
 .. _hip-ucxx-python:
 

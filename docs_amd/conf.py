@@ -29,7 +29,7 @@ html_context = {
 html_theme = "rocm_docs_theme"
 html_theme_options = {
     "flavor": "rocm-ds",
-    "repository_url": "https://github.com/ROCm-DS/hip-ucxx/"
+    "repository_url": "https://github.com/AMD-Ecosystem/hip-ucxx/"
 }
 
 external_toc_path = "./sphinx/_toc.yml"
