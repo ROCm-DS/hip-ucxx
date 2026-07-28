@@ -1,6 +1,6 @@
 .. meta::
   :description: hip-ucxx documentation and API reference library
-  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP
+  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, AMD Data Science, HIP
 
 .. _hip-ucxx:
 
@@ -10,14 +10,14 @@ hip-ucxx documentation
 
 hip-ucxx is a C++ wrapper library around `UCX <https://www.openucx.org/>`_ (Unified Communication X),
 providing a modern object-oriented API for high-performance inter-process and inter-node communication
-on AMD GPUs. It is part of the AMD ROCm Data Science toolkit (ROCm-DS), an open-source software
+on AMD GPUs. It is part of the AMD Data Science toolkit, an open-source software
 collection for high-performance data science applications.
 Forked from the RAPIDS® UCXX project, hip-ucxx brings the same communication capabilities
 to the :doc:`ROCm <rocm:index>`/:doc:`HIP <hip:index>` stack. It offers both a modern C++ interface
 for systems developers and Python bindings with full async support for rapid prototyping and
 distributed computing workflows. For more information, see :doc:`What is hip-ucxx? <what-is-hipUCXX>`
 
-The hip-ucxx code is open and hosted at `https://github.com/ROCm-DS/hip-ucxx <https://github.com/ROCm-DS/hip-ucxx>`_.
+The hip-ucxx code is open and hosted at `https://github.com/AMD-Ecosystem/hip-ucxx <https://github.com/AMD-Ecosystem/hip-ucxx>`_.
 
 .. grid:: 2
   :gutter: 3
@@ -37,6 +37,6 @@ The hip-ucxx code is open and hosted at `https://github.com/ROCm-DS/hip-ucxx <ht
     * :ref:`C++ API reference <hip-ucxx-cpp>`
     * :ref:`Python API reference <hip-ucxx-python>`
 
-To contribute to the documentation refer to `Contributing to ROCm-DS  <https://rocm.docs.amd.com/projects/rocm-ds/en/latest/contribute/contributing.html>`_.
+To contribute to the documentation refer to `Contributing to AMD Data Science  <https://rocm.docs.amd.com/projects/rocm-ds/en/latest/contribute/contributing.html>`_.
 
 You can find licensing information on the `Licensing <https://rocm.docs.amd.com/projects/rocm-ds/en/latest/about/license.html>`_ page.

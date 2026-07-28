@@ -1,6 +1,6 @@
 .. meta::
   :description: hip-ucxx documentation and API reference library
-  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP
+  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, AMD Data Science, HIP
 
 .. _using-ucxx:
 
@@ -15,7 +15,7 @@ templates for building your own application with hip-ucxx, or for adding it to e
 C++ examples
 ============
 
-The C++ examples are located in `cpp/examples <https://github.com/ROCm-DS/hip-ucxx/tree/release/rocmds-26.03/cpp/examples>`_.
+The C++ examples are located in `cpp/examples <https://github.com/AMD-Ecosystem/hip-ucxx/tree/release/rocmds-26.03/cpp/examples>`_.
 See :ref:`building-ucxx` for instructions on setting up your developer environment.
 
 To build the C++ examples, use the provided ``build.hip.sh`` script:

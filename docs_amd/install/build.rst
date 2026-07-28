@@ -1,6 +1,6 @@
 .. meta::
   :description: hip-ucxx documentation and API reference library
-  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, ROCm-DS, AMD, HIP
+  :keywords: UCX, UCXX, communication, networking, GPU-direct, RDMA, ROCm, AMD Data Science, HIP
 
 .. _building-ucxx:
 
@@ -9,7 +9,7 @@ Building hip-ucxx from source
 *****************************
 
 The following instructions provide steps to build and test hip-ucxx from source files provided in the
-https://github.com/ROCm-DS/hip-ucxx repository. To install hip-ucxx for end users,
+https://github.com/AMD-Ecosystem/hip-ucxx repository. To install hip-ucxx for end users,
 see :ref:`installing-ucxx`.
 
 Requirements and dependencies
@@ -30,7 +30,7 @@ Building hip-ucxx uses the following tools and dependencies.
      - ≥ 3.30.4
    * - `UCX <https://github.com/openucx/ucx>`_
      - ≥ 1.18.0 (must be built with ROCm support; see :ref:`building-ucx`)
-   * - `hipMM (RMM) <https://github.com/ROCm-DS/hipMM>`_
+   * - `hipMM (RMM) <https://github.com/AMD-Ecosystem/hipMM>`_
      - 4.0.0 (required for GPU-to-GPU direct transfers)
    * - **Optional Dependencies**
      -
